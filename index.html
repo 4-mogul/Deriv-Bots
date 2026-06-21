@@ -76,6 +76,40 @@ input:focus,select:focus{border-color:var(--accent)}
 .sugr{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
 .errbx{background:rgba(255,71,87,.08);border:1px solid rgba(255,71,87,.3);border-radius:10px;padding:12px;margin-bottom:12px;font-size:12px;color:var(--danger);display:none}
 .sdot{width:10px;height:10px;border-radius:50%;display:inline-block}
+
+/* SMART BARRIER SWITCH */
+.mode-box{border-radius:10px;padding:12px;margin-bottom:12px;border:2px solid transparent;transition:all 0.3s}
+.mode-profit{background:rgba(0,229,160,.06);border-color:rgba(0,229,160,.3)}
+.mode-safe{background:rgba(255,196,61,.06);border-color:rgba(255,196,61,.3)}
+.mode-title{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+.mode-title.profit{color:var(--accent)}
+.mode-title.safe{color:var(--warn)}
+.mode-digits{font-family:monospace;font-size:18px;font-weight:700;margin-bottom:4px}
+.mode-sub{font-size:11px;color:var(--muted)}
+.switch-log{max-height:120px;overflow-y:auto;display:flex;flex-direction:column;gap:3px;margin-top:8px}
+.switch-entry{font-family:monospace;font-size:11px;padding:4px 8px;border-radius:6px;background:var(--surface)}
+
+/* TIME HEATMAP */
+.heatmap-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-bottom:12px}
+.heat-cell{border-radius:6px;padding:6px 4px;text-align:center;border:1px solid var(--border)}
+.heat-hour{font-family:monospace;font-size:10px;color:var(--muted);margin-bottom:3px}
+.heat-wr{font-family:monospace;font-size:11px;font-weight:700}
+.heat-trades{font-size:9px;color:var(--muted)}
+.heat-none{background:var(--surface)}
+.heat-great{background:rgba(0,229,160,.2);border-color:rgba(0,229,160,.4)}
+.heat-good{background:rgba(77,159,255,.15);border-color:rgba(77,159,255,.3)}
+.heat-ok{background:rgba(255,196,61,.12);border-color:rgba(255,196,61,.3)}
+.heat-bad{background:rgba(255,71,87,.12);border-color:rgba(255,71,87,.3)}
+.time-alert{border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:12px;display:none}
+.time-alert.good{background:rgba(0,229,160,.08);border:1px solid rgba(0,229,160,.3);color:var(--accent)}
+.time-alert.warn{background:rgba(255,196,61,.08);border:1px solid rgba(255,196,61,.3);color:var(--warn)}
+.time-alert.bad{background:rgba(255,71,87,.08);border:1px solid rgba(255,71,87,.3);color:var(--danger)}
+.best-times{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.time-pill{padding:4px 10px;border-radius:20px;font-size:11px;font-family:monospace;font-weight:600}
+.time-pill.good{background:rgba(0,229,160,.15);color:var(--accent);border:1px solid rgba(0,229,160,.3)}
+.time-pill.bad{background:rgba(255,71,87,.15);color:var(--danger);border:1px solid rgba(255,71,87,.3)}
+.current-time{font-family:monospace;font-size:22px;font-weight:700;color:var(--accent);text-align:center;margin-bottom:4px}
+.current-date{font-size:11px;color:var(--muted);text-align:center;margin-bottom:12px}
 </style>
 </head>
 <body>
@@ -97,6 +131,7 @@ input:focus,select:focus{border-color:var(--accent)}
         <button class="btn bsp" id="disBtn" onclick="disconnectWS()" style="display:none">✕ Disconnect</button>
       </div>
     </div>
+
     <div class="card">
       <div class="ch"><span class="ct">Market</span><span class="badge bb" id="mktBadge">Vol 50</span></div>
       <div class="cb">
@@ -110,6 +145,7 @@ input:focus,select:focus{border-color:var(--accent)}
         </div>
       </div>
     </div>
+
     <div class="card">
       <div class="ch"><span class="ct">Trade Setup</span></div>
       <div class="cb">
@@ -136,7 +172,10 @@ input:focus,select:focus{border-color:var(--accent)}
       </div>
     </div>
   </div>
+
   <div class="rp">
+
+    <!-- STATS -->
     <div class="card">
       <div class="ch"><span class="ct">Session Stats</span><span class="badge bg" id="sesBadge">Idle</span></div>
       <div class="cb">
@@ -154,6 +193,106 @@ input:focus,select:focus{border-color:var(--accent)}
         <div class="msteps" id="msteps"></div>
       </div>
     </div>
+
+    <!-- SMART BARRIER SWITCHER -->
+    <div class="card">
+      <div class="ch">
+        <span class="ct">🔄 Smart Barrier Switch</span>
+        <span class="badge" id="modeBadge" style="background:rgba(0,229,160,.12);color:var(--accent);border:1px solid rgba(0,229,160,.3)">PROFIT MODE</span>
+      </div>
+      <div class="cb">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+          <div class="mode-box mode-profit" id="profitBox">
+            <div class="mode-title profit">💰 Profit Mode</div>
+            <div class="mode-digits" style="color:var(--accent)" id="profitDigits">Over 2 / Under 8</div>
+            <div class="mode-sub">Higher payout | ~80% win rate</div>
+          </div>
+          <div class="mode-box mode-safe" id="safeBox" style="opacity:0.5">
+            <div class="mode-title safe">🛡 Safe Mode</div>
+            <div class="mode-digits" style="color:var(--warn)" id="safeDigits">Over 0 / Under 9</div>
+            <div class="mode-sub">Recovery mode | ~99% win rate</div>
+          </div>
+        </div>
+
+        <label>Switch to Safe Mode after X losses</label>
+        <input type="number" id="switchAfter" value="3" min="1" max="10"/>
+
+        <label>Return to Profit Mode after X wins</label>
+        <input type="number" id="returnAfter" value="5" min="1" max="20"/>
+
+        <label>Profit Mode Barriers</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+          <div>
+            <div style="font-size:10px;color:var(--muted);margin-bottom:4px">OVER</div>
+            <select id="profitOver">
+              <option value="1">Over 1</option>
+              <option value="2" selected>Over 2</option>
+              <option value="3">Over 3</option>
+              <option value="4">Over 4</option>
+            </select>
+          </div>
+          <div>
+            <div style="font-size:10px;color:var(--muted);margin-bottom:4px">UNDER</div>
+            <select id="profitUnder">
+              <option value="6">Under 6</option>
+              <option value="7">Under 7</option>
+              <option value="8" selected>Under 8</option>
+              <option value="9">Under 9</option>
+            </select>
+          </div>
+        </div>
+
+        <label>Safe Mode Barriers</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+          <div>
+            <div style="font-size:10px;color:var(--muted);margin-bottom:4px">OVER</div>
+            <select id="safeOver">
+              <option value="0" selected>Over 0</option>
+              <option value="1">Over 1</option>
+            </select>
+          </div>
+          <div>
+            <div style="font-size:10px;color:var(--muted);margin-bottom:4px">UNDER</div>
+            <select id="safeUnder">
+              <option value="9" selected>Under 9</option>
+              <option value="8">Under 8</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;margin-bottom:6px">Switch History</div>
+        <div class="switch-log" id="switchLog">
+          <div class="switch-entry" style="color:var(--muted)">No switches yet. Bot will auto-switch barriers.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TIME HEATMAP -->
+    <div class="card">
+      <div class="ch">
+        <span class="ct">⏰ Best Trading Times</span>
+        <div style="display:flex;gap:6px;align-items:center">
+          <span class="badge by" id="tzBadge">UTC</span>
+          <button class="btn ban" style="width:auto;padding:4px 10px;margin:0;font-size:10px" onclick="clearHeatmap()">Reset</button>
+        </div>
+      </div>
+      <div class="cb">
+        <div class="current-time" id="currentTime">--:--:--</div>
+        <div class="current-date" id="currentDate">--</div>
+        <div class="time-alert" id="timeAlert"></div>
+        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">24-Hour Win Rate Heatmap</div>
+        <div class="heatmap-grid" id="heatmapGrid"></div>
+        <div class="sdiv"></div>
+        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;margin-bottom:6px">Best Hours</div>
+        <div class="best-times" id="bestTimes"><span style="color:var(--muted);font-size:12px">Build data by trading!</span></div>
+        <div class="sdiv"></div>
+        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;margin-bottom:6px">Avoid These Hours</div>
+        <div class="best-times" id="worstTimes"><span style="color:var(--muted);font-size:12px">No bad hours yet.</span></div>
+        <div style="font-size:10px;color:var(--muted);margin-top:8px">🟢 ≥90% &nbsp; 🔵 75-89% &nbsp; 🟡 50-74% &nbsp; 🔴 &lt;50%</div>
+      </div>
+    </div>
+
+    <!-- DIGIT ANALYSIS -->
     <div class="card">
       <div class="ch">
         <span class="ct">Live Digit Analysis</span>
@@ -173,12 +312,15 @@ input:focus,select:focus{border-color:var(--accent)}
         <div id="strk" style="font-size:12px;color:var(--muted)">No data yet.</div>
       </div>
     </div>
+
+    <!-- LOG -->
     <div class="card">
       <div class="ch"><span class="ct">Trade Log</span><button onclick="clearLog()" style="background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer">Clear</button></div>
       <div class="cb" style="padding:10px"><div class="lw" id="tlog"><div class="le info"><span class="lt">--:--:--</span><span class="lm">Bot ready. Paste token and connect.</span></div></div></div>
     </div>
   </div>
 </div>
+
 <script>
 const WS_URL='wss://ws.binaryws.com/websockets/v3?app_id=36544';
 let ws=null,connected=false,running=false,autoD=true;
@@ -186,18 +328,143 @@ let mkt='R_50',mktN='Vol 50',ct='DIGITOVER';
 let ovD=2,unD=8,baseStk=0.5,curStk=0.5,mMult=2.1,maxMS=4,mStep=0;
 let pnl=0,wins=0,losses=0,digits=[],pending=null,contracts={},tTout=null;
 
+// ── SMART BARRIER SWITCH STATE ─────────────────
+let inSafeMode=false;
+let consecLosses=0;
+let consecWinsInSafe=0;
+
+function getSwitchAfter(){return parseInt(document.getElementById('switchAfter').value)||3;}
+function getReturnAfter(){return parseInt(document.getElementById('returnAfter').value)||5;}
+function getProfitOver(){return parseInt(document.getElementById('profitOver').value);}
+function getProfitUnder(){return parseInt(document.getElementById('profitUnder').value);}
+function getSafeOver(){return parseInt(document.getElementById('safeOver').value);}
+function getSafeUnder(){return parseInt(document.getElementById('safeUnder').value);}
+
+function applyProfitMode(){
+  inSafeMode=false;
+  consecWinsInSafe=0;
+  ovD=getProfitOver();
+  unD=getProfitUnder();
+  updDB();
+  document.getElementById('modeBadge').textContent='PROFIT MODE';
+  document.getElementById('modeBadge').style.background='rgba(0,229,160,.12)';
+  document.getElementById('modeBadge').style.color='var(--accent)';
+  document.getElementById('modeBadge').style.borderColor='rgba(0,229,160,.3)';
+  document.getElementById('profitBox').style.opacity='1';
+  document.getElementById('safeBox').style.opacity='0.5';
+  document.getElementById('profitDigits').textContent=`Over ${getProfitOver()} / Under ${getProfitUnder()}`;
+  addSwitchLog(`🟢 → PROFIT MODE | Over ${getProfitOver()} / Under ${getProfitUnder()}`);
+  addLog('info',`🔄 Switched to PROFIT MODE | Over ${getProfitOver()} / Under ${getProfitUnder()}`);
+}
+
+function applySafeMode(){
+  inSafeMode=true;
+  consecLosses=0;
+  consecWinsInSafe=0;
+  ovD=getSafeOver();
+  unD=getSafeUnder();
+  updDB();
+  document.getElementById('modeBadge').textContent='SAFE MODE';
+  document.getElementById('modeBadge').style.background='rgba(255,196,61,.12)';
+  document.getElementById('modeBadge').style.color='var(--warn)';
+  document.getElementById('modeBadge').style.borderColor='rgba(255,196,61,.3)';
+  document.getElementById('profitBox').style.opacity='0.5';
+  document.getElementById('safeBox').style.opacity='1';
+  document.getElementById('safeDigits').textContent=`Over ${getSafeOver()} / Under ${getSafeUnder()}`;
+  addSwitchLog(`🟡 → SAFE MODE | Over ${getSafeOver()} / Under ${getSafeUnder()} (${getSwitchAfter()} losses)`);
+  addLog('warn',`🔄 Switched to SAFE MODE | Over ${getSafeOver()} / Under ${getSafeUnder()}`);
+}
+
+function addSwitchLog(msg){
+  const log=document.getElementById('switchLog');
+  const time=new Date().toTimeString().slice(0,8);
+  const e=document.createElement('div');
+  e.className='switch-entry';
+  e.innerHTML=`<span style="color:var(--muted)">${time}</span> ${msg}`;
+  log.prepend(e);
+  while(log.children.length>20)log.removeChild(log.lastChild);
+}
+
+function checkBarrierSwitch(won){
+  if(!inSafeMode){
+    if(!won){
+      consecLosses++;
+      if(consecLosses>=getSwitchAfter()) applySafeMode();
+    } else {
+      consecLosses=0;
+    }
+  } else {
+    if(won){
+      consecWinsInSafe++;
+      if(consecWinsInSafe>=getReturnAfter()) applyProfitMode();
+    } else {
+      consecWinsInSafe=0;
+    }
+  }
+}
+
+// ── TIME HEATMAP ───────────────────────────────
+let hourData=JSON.parse(localStorage.getItem('derivHourData')||'null')||Array(24).fill(null).map(()=>({w:0,l:0}));
+function saveHourData(){try{localStorage.setItem('derivHourData',JSON.stringify(hourData));}catch(e){}}
+function recordHour(won){const h=new Date().getHours();if(won)hourData[h].w++;else hourData[h].l++;saveHourData();updateHeatmap();updateTimeAlert();updateBestWorst();}
+function clearHeatmap(){hourData=Array(24).fill(null).map(()=>({w:0,l:0}));saveHourData();updateHeatmap();updateBestWorst();addLog('info','Heatmap reset.');}
+function getHeatClass(wr,tot){if(tot<5)return'heat-none';if(wr>=90)return'heat-great';if(wr>=75)return'heat-good';if(wr>=50)return'heat-ok';return'heat-bad';}
+function getHeatColor(wr,tot){if(tot<5)return'var(--muted)';if(wr>=90)return'var(--accent)';if(wr>=75)return'var(--accent3)';if(wr>=50)return'var(--warn)';return'var(--danger)';}
+function updateHeatmap(){
+  const grid=document.getElementById('heatmapGrid');
+  const curH=new Date().getHours();
+  grid.innerHTML='';
+  for(let h=0;h<24;h++){
+    const d=hourData[h],total=d.w+d.l,wr=total>0?Math.round(d.w/total*100):0;
+    const cell=document.createElement('div');
+    cell.className=`heat-cell ${getHeatClass(wr,total)}`;
+    if(h===curH)cell.style.outline='2px solid var(--accent)';
+    cell.innerHTML=`<div class="heat-hour">${String(h).padStart(2,'0')}:00${h===curH?' ◀':''}</div><div class="heat-wr" style="color:${getHeatColor(wr,total)}">${total>=5?wr+'%':'—'}</div><div class="heat-trades">${total>0?total+'t':''}</div>`;
+    grid.appendChild(cell);
+  }
+}
+function updateTimeAlert(){
+  const alert=document.getElementById('timeAlert');
+  const h=new Date().getHours(),d=hourData[h],total=d.w+d.l;
+  if(total<5){alert.style.display='none';return;}
+  const wr=Math.round(d.w/total*100);
+  alert.style.display='block';
+  if(wr>=90){alert.className='time-alert good';alert.innerHTML=`✅ <b>Great time!</b> ${wr}% win rate from ${total} trades.`;}
+  else if(wr>=75){alert.className='time-alert good';alert.innerHTML=`🔵 <b>Good time.</b> ${wr}% win rate from ${total} trades.`;}
+  else if(wr>=50){alert.className='time-alert warn';alert.innerHTML=`⚠️ <b>Caution.</b> Only ${wr}% win rate this hour.`;}
+  else{alert.className='time-alert bad';alert.innerHTML=`🔴 <b>Avoid now!</b> Only ${wr}% win rate this hour.`;}
+}
+function updateBestWorst(){
+  const best=document.getElementById('bestTimes'),worst=document.getElementById('worstTimes');
+  const ranked=hourData.map((d,h)=>{const total=d.w+d.l,wr=total>=5?Math.round(d.w/total*100):-1;return{h,wr,total};}).filter(x=>x.wr>=0).sort((a,b)=>b.wr-a.wr);
+  const good=ranked.filter(x=>x.wr>=75),bad=ranked.filter(x=>x.wr<60).reverse();
+  best.innerHTML=good.length===0?'<span style="color:var(--muted);font-size:12px">Keep trading!</span>':good.slice(0,6).map(x=>`<span class="time-pill good">${String(x.h).padStart(2,'0')}:00 ${x.wr}%</span>`).join('');
+  worst.innerHTML=bad.length===0?'<span style="color:var(--muted);font-size:12px">No bad hours yet.</span>':bad.slice(0,6).map(x=>`<span class="time-pill bad">${String(x.h).padStart(2,'0')}:00 ${x.wr}%</span>`).join('');
+}
+function updateClock(){
+  const now=new Date();
+  document.getElementById('currentTime').textContent=now.toTimeString().slice(0,8);
+  document.getElementById('currentDate').textContent=now.toDateString();
+  const off=now.getTimezoneOffset();
+  document.getElementById('tzBadge').textContent='UTC'+(off<=0?'+':'-')+Math.abs(off/60);
+}
+
+// ── INIT ──────────────────────────────────────
 window.onload=()=>{
   buildDB('drO','o');buildDB('drU','u');
-  buildMS();buildFG();setCt('DIGITOVER');updDB();
+  buildMS();buildFG();setCt('BOTH');
+  ovD=getProfitOver();unD=getProfitUnder();updDB();
   addLog('info','Ready. Paste token and connect.');
+  updateHeatmap();updateBestWorst();updateTimeAlert();
+  setInterval(updateClock,1000);setInterval(updateTimeAlert,60000);
+  updateClock();
+  document.getElementById('profitDigits').textContent=`Over ${getProfitOver()} / Under ${getProfitUnder()}`;
+  document.getElementById('safeDigits').textContent=`Over ${getSafeOver()} / Under ${getSafeUnder()}`;
 };
 
 function buildDB(id,mode){
   const r=document.getElementById(id);r.innerHTML='';
-  for(let d=0;d<=9;d++){
-    const b=document.createElement('div');b.className='db';b.textContent=d;
-    b.onclick=()=>selD(d,mode);r.appendChild(b);
-  }
+  for(let d=0;d<=9;d++){const b=document.createElement('div');b.className='db';b.textContent=d;b.onclick=()=>selD(d,mode);r.appendChild(b);}
 }
 function selD(d,m){m==='o'?ovD=d:unD=d;updDB();addLog('info',`${m==='o'?'OVER':'UNDER'} barrier → ${d}`);}
 function updDB(){
@@ -217,11 +484,7 @@ function setCt(t){
   else if(t==='DIGITUNDER'){document.getElementById('cU').className='tb au';document.getElementById('drU').style.display='none';document.getElementById('ulbl').style.display='none';}
   else{document.getElementById('cB').className='tb ao';document.getElementById('drU').style.display='flex';document.getElementById('ulbl').style.display='block';}
 }
-function setAuto(v){
-  autoD=v;
-  document.getElementById('aOn').className=v?'tb ao':'tb';
-  document.getElementById('aOff').className=!v?'tb ao':'tb';
-}
+function setAuto(v){autoD=v;document.getElementById('aOn').className=v?'tb ao':'tb';document.getElementById('aOff').className=!v?'tb ao':'tb';}
 
 function connectWS(){
   const tok=document.getElementById('tok').value.trim();
@@ -229,8 +492,7 @@ function connectWS(){
   hideErr();if(ws){ws.close();ws=null;}
   addLog('info','Connecting...');setStat('connecting');
   document.getElementById('conBtn').disabled=true;
-  try{ws=new WebSocket(WS_URL);}
-  catch(e){showErr('WebSocket error: '+e.message);setStat('err');document.getElementById('conBtn').disabled=false;return;}
+  try{ws=new WebSocket(WS_URL);}catch(e){showErr('WebSocket error: '+e.message);setStat('err');document.getElementById('conBtn').disabled=false;return;}
   ws.onopen=()=>{addLog('info','Connected. Authorizing...');ws.send(JSON.stringify({authorize:tok}));};
   ws.onmessage=e=>{try{handleMsg(JSON.parse(e.data));}catch(x){addLog('warn','Parse error');}};
   ws.onerror=()=>{showErr('Connection failed. Check token & internet.');setStat('err');document.getElementById('conBtn').disabled=false;};
@@ -245,10 +507,7 @@ function connectWS(){
 function disconnectWS(){if(ws){ws.close();ws=null;}}
 
 function handleMsg(m){
-  if(m.error){
-    showErr(`Error [${m.error.code}]: ${m.error.message}`);
-    addLog('warn',`${m.error.message}`);return;
-  }
+  if(m.error){showErr(`Error [${m.error.code}]: ${m.error.message}`);addLog('warn',`${m.error.message}`);return;}
   if(m.msg_type==='authorize'){
     hideErr();connected=true;setStat('on');
     addLog('info',`✅ ${m.authorize.loginid} | Balance: ${m.authorize.balance} ${m.authorize.currency}`);
@@ -258,18 +517,11 @@ function handleMsg(m){
     subTicks();ws.send(JSON.stringify({proposal_open_contract:1,subscribe:1}));
   }
   if(m.msg_type==='tick')procTick(m.tick);
-  if(m.msg_type==='buy'&&m.buy){
-    contracts[m.buy.contract_id]={stk:curStk,type:pending};
-    addLog('info',`📋 ${pending} | $${curStk.toFixed(2)} | ID:${m.buy.contract_id}`);
-  }
+  if(m.msg_type==='buy'&&m.buy){contracts[m.buy.contract_id]={stk:curStk,type:pending};addLog('info',`📋 ${pending} | $${curStk.toFixed(2)} | ID:${m.buy.contract_id}`);}
   if(m.msg_type==='proposal_open_contract'&&m.proposal_open_contract?.is_sold)
     handleResult(m.proposal_open_contract.contract_id,parseFloat(m.proposal_open_contract.profit));
 }
-function subTicks(){
-  if(!connected||!ws)return;
-  ws.send(JSON.stringify({ticks:mkt,subscribe:1}));
-  addLog('info',`Subscribed to ${mktN}`);
-}
+function subTicks(){if(!connected||!ws)return;ws.send(JSON.stringify({ticks:mkt,subscribe:1}));addLog('info',`Subscribed to ${mktN}`);}
 function procTick(tick){
   const p=tick.quote.toString(),d=parseInt(p[p.length-1]);
   if(isNaN(d))return;
@@ -282,7 +534,7 @@ function procTick(tick){
 }
 
 function runAnalysis(){
-  if(digits.length<10){addLog('warn','Need more ticks. Wait after connecting.');return;}
+  if(digits.length<10){addLog('warn','Need more ticks.');return;}
   updFB();updStrk();autoSel();
 }
 function getCounts(){const c=Array(10).fill(0);digits.forEach(d=>c[d]++);return c;}
@@ -298,8 +550,9 @@ function updFB(){
   });
 }
 function autoSel(){
+  if(inSafeMode)return; // don't override safe mode barriers
   const c=getCounts(),tot=digits.length;if(!tot)return;
-  let bO=2,bU=8,sO=0,sU=0;
+  let bO=getProfitOver(),bU=getProfitUnder(),sO=0,sU=0;
   for(let b=0;b<=8;b++){const s=c.slice(b+1).reduce((a,v)=>a+v,0);if(s>sO){sO=s;bO=b;}}
   for(let b=1;b<=9;b++){const s=c.slice(0,b).reduce((a,v)=>a+v,0);if(s>sU){sU=s;bU=b;}}
   ovD=bO;unD=bU;updDB();
@@ -343,10 +596,13 @@ function startBot(){
   mMult=parseFloat(document.getElementById('mmt').value);
   maxMS=parseInt(document.getElementById('mms').value);
   curStk=baseStk;mStep=0;wins=0;losses=0;pnl=0;running=true;
+  consecLosses=0;consecWinsInSafe=0;inSafeMode=false;
+  applyProfitMode();
   buildMS();updStats();
   document.getElementById('startBtn').disabled=true;document.getElementById('stopBtn').disabled=false;
   document.getElementById('sesBadge').textContent='Running';document.getElementById('sesBadge').className='badge bg';
-  addLog('info',`🚀 Started | Base:$${baseStk} | Mult:${mMult}x | TP:$${document.getElementById('tp').value} | SL:$${document.getElementById('sl').value}`);
+  addLog('info',`🚀 Started | Base:$${baseStk} | Profit:Over${getProfitOver()}/Under${getProfitUnder()} | Safe:Over${getSafeOver()}/Under${getSafeUnder()}`);
+  updateTimeAlert();
   runTrade();
 }
 function stopBot(){
@@ -357,7 +613,7 @@ function stopBot(){
 }
 function runTrade(){
   if(!running||!connected||!ws)return;
-  if(autoD&&digits.length>=20)autoSel();
+  if(autoD&&digits.length>=20&&!inSafeMode)autoSel();
   const tpv=parseFloat(document.getElementById('tp').value),slv=parseFloat(document.getElementById('sl').value);
   if(pnl>=tpv){addLog('win',`🎯 Take Profit! +$${pnl.toFixed(2)}`);stopBot();return;}
   if(pnl<=-slv){addLog('loss',`🛑 Stop Loss! $${pnl.toFixed(2)}`);stopBot();return;}
@@ -372,20 +628,19 @@ function placeTrade(type,barrier,stk){
 }
 function handleResult(id,profit){
   pnl+=profit;const won=profit>0;
-  if(won){wins++;mStep=0;curStk=parseFloat(document.getElementById('bstk').value);addLog('win',`✅ WIN +$${Math.abs(profit).toFixed(2)} | P&L:$${pnl.toFixed(2)}`);}
+  checkBarrierSwitch(won);
+  recordHour(won);
+  if(won){wins++;mStep=0;curStk=parseFloat(document.getElementById('bstk').value);addLog('win',`✅ WIN +$${Math.abs(profit).toFixed(2)} | P&L:$${pnl.toFixed(2)} | ${inSafeMode?'🛡SAFE':'💰PROFIT'}`);}
   else{
     losses++;
-    if(mStep<maxMS-1){mStep++;curStk*=mMult;addLog('loss',`❌ LOSS -$${Math.abs(profit).toFixed(2)} | Step${mStep} → $${curStk.toFixed(2)}`);}
+    if(mStep<maxMS-1){mStep++;curStk*=mMult;addLog('loss',`❌ LOSS | Step${mStep} → $${curStk.toFixed(2)} | ${inSafeMode?'🛡SAFE':'💰PROFIT'}`);}
     else{mStep=0;curStk=parseFloat(document.getElementById('bstk').value);addLog('loss',`❌ Max steps. Reset.`);}
   }
   updStats();updMUI();delete contracts[id];
   if(running)tTout=setTimeout(runTrade,1500);
 }
 
-function buildMS(){
-  const c=document.getElementById('msteps');c.innerHTML='';
-  for(let i=0;i<maxMS;i++){const s=document.createElement('div');s.className='ms';s.id=`ms${i}`;c.appendChild(s);}
-}
+function buildMS(){const c=document.getElementById('msteps');c.innerHTML='';for(let i=0;i<maxMS;i++){const s=document.createElement('div');s.className='ms';s.id=`ms${i}`;c.appendChild(s);}}
 function buildFG(){
   const g=document.getElementById('fgrid');g.innerHTML='';
   for(let d=0;d<=9;d++){
