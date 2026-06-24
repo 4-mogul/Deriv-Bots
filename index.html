@@ -3,122 +3,186 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Deriv Smart Bot</title>
+<title>Deriv Bot — Operation $1000</title>
 <style>
-:root{--bg:#0a0d12;--surface:#111620;--card:#161d2a;--border:#1e2a3a;--accent:#00e5a0;--accent3:#4d9fff;--warn:#ffc43d;--danger:#ff4757;--text:#e2e8f0;--muted:#64748b;--over:#4d9fff;--under:#ff6b35}
+:root{
+  --bg:#07090f;--surface:#0f1420;--card:#131b27;--border:#1a2535;
+  --accent:#00e5a0;--accent3:#4d9fff;--warn:#ffc43d;--danger:#ff4757;
+  --text:#e2e8f0;--muted:#4a5568;--over:#4d9fff;--under:#ff6b35;
+  --green:#00e5a0;--red:#ff4757;--gold:#ffc43d;
+}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:sans-serif;font-size:14px}
-.header{background:#0a0d12;border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-.logo{font-size:16px;font-weight:700;color:var(--accent);font-family:monospace}
+body{background:var(--bg);color:var(--text);font-family:sans-serif;font-size:14px;min-height:100vh}
+
+.header{background:linear-gradient(135deg,#07090f,#0d1520);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{font-family:monospace;font-size:15px;font-weight:700;color:var(--accent)}
+.logo span{color:var(--gold)}
 .hstat{display:flex;align-items:center;gap:8px;font-family:monospace;font-size:11px}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted);flex-shrink:0}
 .dot.on{background:var(--accent);box-shadow:0 0 8px var(--accent);animation:pu 2s infinite}
-.dot.err{background:var(--danger)}
-@keyframes pu{0%,100%{opacity:1}50%{opacity:.5}}
-.wrap{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-columns:300px 1fr;gap:16px}
+.dot.err{background:var(--danger);box-shadow:0 0 8px var(--danger)}
+@keyframes pu{0%,100%{opacity:1}50%{opacity:.4}}
+
+.wrap{max-width:1100px;margin:0 auto;padding:12px;display:grid;grid-template-columns:290px 1fr;gap:12px}
 @media(max-width:768px){.wrap{grid-template-columns:1fr}}
-.card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:16px}
-.ch{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.02)}
-.ct{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
-.cb{padding:16px}
-label{display:block;font-size:11px;font-weight:500;color:var(--muted);margin-bottom:5px;letter-spacing:.5px;text-transform:uppercase}
-input,select{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:9px 12px;font-size:13px;font-family:monospace;outline:none;margin-bottom:12px}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px}
+.ch{padding:11px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.015)}
+.ct{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted)}
+.cb{padding:14px}
+
+label{display:block;font-size:10px;font-weight:600;color:var(--muted);margin-bottom:4px;letter-spacing:.5px;text-transform:uppercase}
+input,select{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:8px 11px;font-size:13px;font-family:monospace;outline:none;margin-bottom:10px;transition:border .2s}
 input:focus,select:focus{border-color:var(--accent)}
-.trow{display:flex;gap:6px;margin-bottom:12px}
-.tb{flex:1;padding:8px 4px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;text-align:center}
+
+.trow{display:flex;gap:5px;margin-bottom:10px}
+.tb{flex:1;padding:8px 4px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;text-align:center;transition:all .2s}
 .tb.ao{background:rgba(77,159,255,.15);border-color:var(--over);color:var(--over)}
 .tb.au{background:rgba(255,107,53,.15);border-color:var(--under);color:var(--under)}
-.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px}
-.mp{padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:11px;font-family:monospace;cursor:pointer;text-align:center;line-height:1.4}
+.tb.ag{background:rgba(0,229,160,.15);border-color:var(--accent);color:var(--accent)}
+
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:10px}
+.mp{padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:11px;font-family:monospace;cursor:pointer;text-align:center;line-height:1.4;transition:all .2s}
 .mp.active{border-color:var(--accent);background:rgba(0,229,160,.08);color:var(--accent)}
-.drow{display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap}
-.db{width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:13px;font-weight:600;font-family:monospace;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+.drow{display:flex;gap:3px;margin-bottom:10px;flex-wrap:wrap}
+.db{width:32px;height:32px;border-radius:7px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:12px;font-weight:700;font-family:monospace;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
 .db.ao{background:rgba(77,159,255,.2);border-color:var(--over);color:var(--over)}
 .db.au{background:rgba(255,107,53,.2);border-color:var(--under);color:var(--under)}
-.srow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
-.sb{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 8px;text-align:center}
-.sv{font-family:monospace;font-size:18px;font-weight:700;line-height:1;margin-bottom:4px}
-.sl{font-size:10px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase}
-.sv.g{color:var(--accent)}.sv.r{color:var(--danger)}.sv.y{color:var(--warn)}.sv.b{color:var(--accent3)}
-.btn{width:100%;padding:11px;border-radius:10px;border:none;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:8px}
+
+.btn{width:100%;padding:11px;border-radius:10px;border:none;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:8px;transition:all .2s;letter-spacing:.3px}
 .bst{background:linear-gradient(135deg,var(--accent),#00b87a);color:#000}
-.bst:disabled{opacity:.4;cursor:not-allowed}
-.bsp{background:rgba(255,71,87,.15);border:1px solid var(--danger);color:var(--danger)}
-.ban{background:rgba(77,159,255,.1);border:1px solid var(--accent3);color:var(--accent3)}
-.rp{display:flex;flex-direction:column;gap:16px}
-.fgrid{display:flex;flex-direction:column;gap:6px}
-.fr{display:flex;align-items:center;gap:8px}
-.fl{font-family:monospace;font-size:13px;font-weight:700;width:18px;text-align:center}
-.fbw{flex:1;height:22px;background:var(--surface);border-radius:4px;overflow:hidden;position:relative}
-.fb{height:100%;border-radius:4px;transition:width .6s ease;position:relative}
-.fp{position:absolute;right:6px;top:50%;transform:translateY(-50%);font-family:monospace;font-size:10px;font-weight:600;color:rgba(255,255,255,.8)}
-.fc{font-family:monospace;font-size:11px;color:var(--muted);width:28px;text-align:right}
-.lw{max-height:220px;overflow-y:auto;display:flex;flex-direction:column;gap:3px}
-.le{display:flex;align-items:flex-start;gap:8px;padding:5px 8px;border-radius:6px;font-family:monospace;font-size:11px;background:var(--surface);border-left:3px solid transparent}
-.le.win{border-left-color:var(--accent)}.le.loss{border-left-color:var(--danger)}.le.info{border-left-color:var(--accent3)}.le.warn{border-left-color:var(--warn)}
-.lt{color:var(--muted);min-width:52px}.lm{flex:1;color:var(--text)}
-.tape{display:flex;gap:4px;overflow-x:auto;padding-bottom:4px;min-height:38px;align-items:center}
-.td{min-width:32px;height:32px;border-radius:6px;border:1px solid var(--border);background:var(--surface);font-family:monospace;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bst:hover{opacity:.9;transform:translateY(-1px)}
+.bst:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.bsp{background:rgba(255,71,87,.12);border:1px solid var(--danger);color:var(--danger)}
+.ban{background:rgba(77,159,255,.08);border:1px solid var(--accent3);color:var(--accent3)}
+
+.rp{display:flex;flex-direction:column;gap:12px}
+
+/* OPERATION PROGRESS */
+.op-header{text-align:center;padding:16px;background:linear-gradient(135deg,rgba(0,229,160,.05),rgba(77,159,255,.05));border-bottom:1px solid var(--border)}
+.op-title{font-family:monospace;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:4px}
+.op-amount{font-family:monospace;font-size:32px;font-weight:700;color:var(--accent);line-height:1}
+.op-target{font-size:11px;color:var(--muted);margin-top:4px}
+.op-bar-wrap{height:8px;background:var(--surface);border-radius:4px;margin:12px 0;overflow:hidden}
+.op-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent3));border-radius:4px;transition:width 1s ease}
+.op-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:4px}
+.op-stat{text-align:center}
+.op-stat-val{font-family:monospace;font-size:15px;font-weight:700}
+.op-stat-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+
+/* DAILY PANEL */
+.day-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.day-box{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center}
+.day-val{font-family:monospace;font-size:20px;font-weight:700;line-height:1;margin-bottom:3px}
+.day-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.day-val.g{color:var(--green)}.day-val.r{color:var(--red)}.day-val.y{color:var(--gold)}.day-val.b{color:var(--accent3)}
+
+.prog-bar-wrap{height:6px;background:var(--surface);border-radius:3px;margin:8px 0;overflow:hidden;position:relative}
+.prog-bar{height:100%;border-radius:3px;transition:width .5s ease}
+.prog-tp{background:var(--green)}
+.prog-sl{background:var(--red)}
+
+/* STATUS ALERTS */
+.alert{border-radius:10px;padding:11px 14px;margin-bottom:12px;font-size:12px;font-weight:500;display:none;line-height:1.5}
+.alert.good{background:rgba(0,229,160,.08);border:1px solid rgba(0,229,160,.25);color:var(--accent)}
+.alert.warn{background:rgba(255,196,61,.08);border:1px solid rgba(255,196,61,.25);color:var(--gold)}
+.alert.bad{background:rgba(255,71,87,.08);border:1px solid rgba(255,71,87,.25);color:var(--danger)}
+.alert.info{background:rgba(77,159,255,.08);border:1px solid rgba(77,159,255,.25);color:var(--accent3)}
+
+/* COOLDOWN */
+.cooldown-box{background:rgba(255,196,61,.06);border:1px solid rgba(255,196,61,.2);border-radius:10px;padding:14px;text-align:center;display:none;margin-bottom:12px}
+.cooldown-timer{font-family:monospace;font-size:36px;font-weight:700;color:var(--gold);margin:8px 0}
+.cooldown-msg{font-size:12px;color:var(--muted)}
+
+/* MODE */
+.mode-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.mode-card{border-radius:10px;padding:11px;border:2px solid transparent;transition:all .3s;opacity:.5}
+.mode-card.active{opacity:1}
+.mode-profit{background:rgba(0,229,160,.05);border-color:rgba(0,229,160,.2) !important}
+.mode-safe{background:rgba(255,196,61,.05);border-color:rgba(255,196,61,.2) !important}
+.mode-name{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.mode-barrier{font-family:monospace;font-size:15px;font-weight:700;margin-bottom:2px}
+.mode-sub{font-size:10px;color:var(--muted)}
+
+/* FREQ */
+.fgrid{display:flex;flex-direction:column;gap:5px}
+.fr{display:flex;align-items:center;gap:7px}
+.fl{font-family:monospace;font-size:12px;font-weight:700;width:16px;text-align:center}
+.fbw{flex:1;height:20px;background:var(--surface);border-radius:3px;overflow:hidden;position:relative}
+.fb{height:100%;border-radius:3px;transition:width .5s ease}
+.fp{position:absolute;right:5px;top:50%;transform:translateY(-50%);font-family:monospace;font-size:10px;font-weight:600;color:rgba(255,255,255,.8)}
+.fc{font-family:monospace;font-size:10px;color:var(--muted);width:24px;text-align:right}
+
+/* LOG */
+.lw{max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:2px}
+.le{display:flex;align-items:flex-start;gap:7px;padding:5px 8px;border-radius:5px;font-family:monospace;font-size:11px;background:var(--surface);border-left:3px solid transparent}
+.le.win{border-left-color:var(--green)}.le.loss{border-left-color:var(--red)}
+.le.info{border-left-color:var(--accent3)}.le.warn{border-left-color:var(--gold)}
+.lt{color:var(--muted);min-width:50px}.lm{flex:1;color:var(--text)}
+
+/* TAPE */
+.tape{display:flex;gap:3px;overflow-x:auto;padding-bottom:4px;min-height:36px;align-items:center}
+.td{min-width:30px;height:30px;border-radius:6px;border:1px solid var(--border);background:var(--surface);font-family:monospace;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .td.new{animation:si .3s ease}
 .td.om{border-color:var(--over);color:var(--over)}.td.um{border-color:var(--under);color:var(--under)}
 @keyframes si{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
-.badge{display:inline-flex;align-items:center;padding:3px 8px;border-radius:20px;font-size:10px;font-weight:600;text-transform:uppercase}
+
+.badge{display:inline-flex;align-items:center;padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
 .bg{background:rgba(0,229,160,.12);color:var(--accent);border:1px solid rgba(0,229,160,.3)}
 .br{background:rgba(255,71,87,.12);color:var(--danger);border:1px solid rgba(255,71,87,.3)}
-.by{background:rgba(255,196,61,.12);color:var(--warn);border:1px solid rgba(255,196,61,.3)}
+.by{background:rgba(255,196,61,.12);color:var(--gold);border:1px solid rgba(255,196,61,.3)}
 .bb{background:rgba(77,159,255,.12);color:var(--accent3);border:1px solid rgba(77,159,255,.3)}
-.sdiv{height:1px;background:var(--border);margin:12px 0}
-.msteps{display:flex;gap:4px;margin-top:6px}
-.ms{flex:1;height:6px;border-radius:3px;background:var(--border)}
-.ms.act{background:var(--warn)}.ms.dn{background:var(--danger)}
-.sug{background:rgba(0,229,160,.05);border:1px solid rgba(0,229,160,.2);border-radius:10px;padding:12px;margin-bottom:12px}
-.sugt{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
-.sugr{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
-.errbx{background:rgba(255,71,87,.08);border:1px solid rgba(255,71,87,.3);border-radius:10px;padding:12px;margin-bottom:12px;font-size:12px;color:var(--danger);display:none}
-.sdot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.sdiv{height:1px;background:var(--border);margin:10px 0}
 
-/* SMART BARRIER SWITCH */
-.mode-box{border-radius:10px;padding:12px;margin-bottom:12px;border:2px solid transparent;transition:all 0.3s}
-.mode-profit{background:rgba(0,229,160,.06);border-color:rgba(0,229,160,.3)}
-.mode-safe{background:rgba(255,196,61,.06);border-color:rgba(255,196,61,.3)}
-.mode-title{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
-.mode-title.profit{color:var(--accent)}
-.mode-title.safe{color:var(--warn)}
-.mode-digits{font-family:monospace;font-size:18px;font-weight:700;margin-bottom:4px}
-.mode-sub{font-size:11px;color:var(--muted)}
-.switch-log{max-height:120px;overflow-y:auto;display:flex;flex-direction:column;gap:3px;margin-top:8px}
-.switch-entry{font-family:monospace;font-size:11px;padding:4px 8px;border-radius:6px;background:var(--surface)}
+.sug{background:rgba(0,229,160,.04);border:1px solid rgba(0,229,160,.15);border-radius:8px;padding:11px;margin-bottom:10px}
+.sugt{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin-bottom:7px}
+.sugr{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px}
+.errbx{background:rgba(255,71,87,.07);border:1px solid rgba(255,71,87,.25);border-radius:8px;padding:11px;margin-bottom:10px;font-size:12px;color:var(--danger);display:none}
+.sdot{width:9px;height:9px;border-radius:50%;display:inline-block}
 
-/* TIME HEATMAP */
-.heatmap-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-bottom:12px}
-.heat-cell{border-radius:6px;padding:6px 4px;text-align:center;border:1px solid var(--border)}
-.heat-hour{font-family:monospace;font-size:10px;color:var(--muted);margin-bottom:3px}
-.heat-wr{font-family:monospace;font-size:11px;font-weight:700}
-.heat-trades{font-size:9px;color:var(--muted)}
-.heat-none{background:var(--surface)}
-.heat-great{background:rgba(0,229,160,.2);border-color:rgba(0,229,160,.4)}
-.heat-good{background:rgba(77,159,255,.15);border-color:rgba(77,159,255,.3)}
-.heat-ok{background:rgba(255,196,61,.12);border-color:rgba(255,196,61,.3)}
-.heat-bad{background:rgba(255,71,87,.12);border-color:rgba(255,71,87,.3)}
-.time-alert{border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:12px;display:none}
-.time-alert.good{background:rgba(0,229,160,.08);border:1px solid rgba(0,229,160,.3);color:var(--accent)}
-.time-alert.warn{background:rgba(255,196,61,.08);border:1px solid rgba(255,196,61,.3);color:var(--warn)}
-.time-alert.bad{background:rgba(255,71,87,.08);border:1px solid rgba(255,71,87,.3);color:var(--danger)}
-.best-times{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-.time-pill{padding:4px 10px;border-radius:20px;font-size:11px;font-family:monospace;font-weight:600}
-.time-pill.good{background:rgba(0,229,160,.15);color:var(--accent);border:1px solid rgba(0,229,160,.3)}
-.time-pill.bad{background:rgba(255,71,87,.15);color:var(--danger);border:1px solid rgba(255,71,87,.3)}
-.current-time{font-family:monospace;font-size:22px;font-weight:700;color:var(--accent);text-align:center;margin-bottom:4px}
-.current-date{font-size:11px;color:var(--muted);text-align:center;margin-bottom:12px}
+/* HEATMAP */
+.hmgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;margin-bottom:10px}
+.hc{border-radius:5px;padding:5px 3px;text-align:center;border:1px solid var(--border);transition:all .2s}
+.hh{font-family:monospace;font-size:9px;color:var(--muted);margin-bottom:2px}
+.hw{font-family:monospace;font-size:10px;font-weight:700}
+.ht{font-size:8px;color:var(--muted)}
+.hn{background:var(--surface)}
+.hgr{background:rgba(0,229,160,.18);border-color:rgba(0,229,160,.35)}
+.hgo{background:rgba(77,159,255,.13);border-color:rgba(77,159,255,.28)}
+.hok{background:rgba(255,196,61,.1);border-color:rgba(255,196,61,.25)}
+.hbd{background:rgba(255,71,87,.1);border-color:rgba(255,71,87,.25)}
+
+.ctime{font-family:monospace;font-size:20px;font-weight:700;color:var(--accent);text-align:center;margin-bottom:2px}
+.cdate{font-size:11px;color:var(--muted);text-align:center;margin-bottom:10px}
+.tpill{padding:3px 9px;border-radius:20px;font-size:11px;font-family:monospace;font-weight:600}
+.tpg{background:rgba(0,229,160,.13);color:var(--accent);border:1px solid rgba(0,229,160,.28)}
+.tpb{background:rgba(255,71,87,.13);color:var(--danger);border:1px solid rgba(255,71,87,.28)}
+
+/* HISTORY */
+.hist-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:8px}
+.hist-day{border-radius:6px;padding:6px 4px;text-align:center;border:1px solid var(--border);background:var(--surface)}
+.hist-day.win{background:rgba(0,229,160,.1);border-color:rgba(0,229,160,.3)}
+.hist-day.loss{background:rgba(255,71,87,.1);border-color:rgba(255,71,87,.3)}
+.hist-day.today{outline:2px solid var(--accent)}
+.hd-day{font-size:9px;color:var(--muted)}
+.hd-pnl{font-family:monospace;font-size:11px;font-weight:700}
 </style>
 </head>
 <body>
+
 <div class="header">
-  <div class="logo">DERIV/BOT ● OV/UN</div>
-  <div class="hstat"><div class="dot" id="dot"></div><span id="stxt">OFFLINE</span></div>
+  <div class="logo">DERIV/BOT <span>● OP$1000</span></div>
+  <div class="hstat">
+    <div class="dot" id="dot"></div>
+    <span id="stxt">OFFLINE</span>
+  </div>
 </div>
+
 <div class="wrap">
+  <!-- LEFT -->
   <div>
+    <!-- Connection -->
     <div class="card">
       <div class="ch"><span class="ct">Connection</span></div>
       <div class="cb">
@@ -132,163 +196,183 @@ input:focus,select:focus{border-color:var(--accent)}
       </div>
     </div>
 
+    <!-- Market -->
     <div class="card">
-      <div class="ch"><span class="ct">Market</span><span class="badge bb" id="mktBadge">Vol 50</span></div>
+      <div class="ch"><span class="ct">Market</span><span class="badge bb" id="mktBadge">Vol 75</span></div>
       <div class="cb">
         <div class="mgrid">
-          <div class="mp" onclick="selMkt('R_10','Vol 10')" data-s="R_10">Volatility<br><b>10</b><br><small>±low</small></div>
-          <div class="mp" onclick="selMkt('R_25','Vol 25')" data-s="R_25">Volatility<br><b>25</b><br><small>±mid</small></div>
-          <div class="mp active" onclick="selMkt('R_50','Vol 50')" data-s="R_50">Volatility<br><b>50</b><br><small>★ default</small></div>
-          <div class="mp" onclick="selMkt('R_75','Vol 75')" data-s="R_75">Volatility<br><b>75</b><br><small>±high</small></div>
-          <div class="mp" onclick="selMkt('R_100','Vol 100')" data-s="R_100">Volatility<br><b>100</b><br><small>±max</small></div>
+          <div class="mp" onclick="selMkt('R_10','Vol 10')" data-s="R_10">Vol<br><b>10</b><br><small>±low</small></div>
+          <div class="mp" onclick="selMkt('R_25','Vol 25')" data-s="R_25">Vol<br><b>25</b><br><small>±mid</small></div>
+          <div class="mp" onclick="selMkt('R_50','Vol 50')" data-s="R_50">Vol<br><b>50</b><br><small>★ safe</small></div>
+          <div class="mp active" onclick="selMkt('R_75','Vol 75')" data-s="R_75">Vol<br><b>75</b><br><small>★ best</small></div>
+          <div class="mp" onclick="selMkt('R_100','Vol 100')" data-s="R_100">Vol<br><b>100</b><br><small>±max</small></div>
           <div class="mp" onclick="selMkt('1HZ10V','Vol 10 1s')" data-s="1HZ10V">Vol 10<br><b>1s</b><br><small>fast</small></div>
         </div>
       </div>
     </div>
 
+    <!-- Strategy -->
     <div class="card">
-      <div class="ch"><span class="ct">Trade Setup</span></div>
+      <div class="ch"><span class="ct">Strategy</span><span class="badge by" id="modeBadge">PROFIT MODE</span></div>
       <div class="cb">
+        <div class="mode-row">
+          <div class="mode-card mode-profit active" id="profitCard">
+            <div class="mode-name" style="color:var(--accent)">💰 Profit</div>
+            <div class="mode-barrier" style="color:var(--accent)" id="profitLbl">O2 / U8</div>
+            <div class="mode-sub">Higher payout</div>
+          </div>
+          <div class="mode-card mode-safe" id="safeCard">
+            <div class="mode-name" style="color:var(--gold)">🛡 Safe</div>
+            <div class="mode-barrier" style="color:var(--gold)" id="safeLbl">O0 / U9</div>
+            <div class="mode-sub">Recovery mode</div>
+          </div>
+        </div>
+
         <label>Contract Type</label>
         <div class="trow">
           <div class="tb ao" id="cO" onclick="setCt('DIGITOVER')">▲ OVER</div>
           <div class="tb" id="cU" onclick="setCt('DIGITUNDER')">▼ UNDER</div>
-          <div class="tb" id="cB" onclick="setCt('BOTH')">⇅ BOTH</div>
+          <div class="tb ag" id="cB" onclick="setCt('BOTH')">⇅ BOTH</div>
         </div>
+
         <label>Barrier — OVER</label>
         <div class="drow" id="drO"></div>
         <label id="ulbl" style="display:none">Barrier — UNDER</label>
         <div class="drow" id="drU" style="display:none"></div>
-        <label>Base Stake (USD)</label><input type="number" id="bstk" value="0.50" min="0.35" step="0.01"/>
-        <label>Martingale Multiplier</label><input type="number" id="mmt" value="2.1" min="1.1" step="0.1"/>
-        <label>Max Martingale Steps</label><input type="number" id="mms" value="4" min="1" max="8"/>
-        <label>Take Profit (USD)</label><input type="number" id="tp" value="5" min="0.5" step="0.5"/>
-        <label>Stop Loss (USD)</label><input type="number" id="sl" value="10" min="0.5" step="0.5"/>
+
+        <label>Flat Stake (USD) — No Martingale</label>
+        <input type="number" id="bstk" value="0.35" min="0.35" max="2.00" step="0.01"/>
+
+        <label>Daily Take Profit (USD)</label>
+        <input type="number" id="tp" value="2.00" min="0.50" step="0.50"/>
+
+        <label>Daily Stop Loss (USD)</label>
+        <input type="number" id="sl" value="1.50" min="0.50" step="0.50"/>
+
+        <label>Switch to Safe after X losses</label>
+        <input type="number" id="switchAfter" value="3" min="1" max="10"/>
+
+        <label>Return to Profit after X wins</label>
+        <input type="number" id="returnAfter" value="5" min="1" max="20"/>
+
+        <label>Cooldown after loss streak (mins)</label>
+        <input type="number" id="cooldownMins" value="5" min="1" max="30"/>
+
         <div class="sdiv"></div>
         <label>Auto-Select Best Digits</label>
-        <div class="trow"><div class="tb ao" id="aOn" onclick="setAuto(true)">ON</div><div class="tb" id="aOff" onclick="setAuto(false)">OFF</div></div>
+        <div class="trow">
+          <div class="tb ag" id="aOn" onclick="setAuto(true)">ON</div>
+          <div class="tb" id="aOff" onclick="setAuto(false)">OFF</div>
+        </div>
+
         <button class="btn bst" id="startBtn" onclick="startBot()" disabled>▶ START BOT</button>
         <button class="btn bsp" id="stopBtn" onclick="stopBot()" disabled>■ STOP BOT</button>
       </div>
     </div>
   </div>
 
+  <!-- RIGHT -->
   <div class="rp">
 
-    <!-- STATS -->
+    <!-- OPERATION $1000 PROGRESS -->
     <div class="card">
-      <div class="ch"><span class="ct">Session Stats</span><span class="badge bg" id="sesBadge">Idle</span></div>
+      <div class="op-header">
+        <div class="op-title">🎯 Operation $1000</div>
+        <div class="op-amount" id="opBalance">$7.50</div>
+        <div class="op-target">Target: $1,000.00</div>
+        <div class="op-bar-wrap">
+          <div class="op-bar" id="opBar" style="width:0.75%"></div>
+        </div>
+        <div style="font-size:10px;color:var(--muted);margin-bottom:8px"><span id="opPct">0.75%</span> complete · <span id="opDaysLeft">~</span> days to target</div>
+        <div class="op-stats">
+          <div class="op-stat">
+            <div class="op-stat-val" style="color:var(--green)" id="opTotalProfit">+$0.00</div>
+            <div class="op-stat-lbl">Total Profit</div>
+          </div>
+          <div class="op-stat">
+            <div class="op-stat-val" style="color:var(--gold)" id="opDays">0</div>
+            <div class="op-stat-lbl">Days Active</div>
+          </div>
+          <div class="op-stat">
+            <div class="op-stat-val" style="color:var(--accent3)" id="opAvgDay">$0.00</div>
+            <div class="op-stat-lbl">Avg/Day</div>
+          </div>
+        </div>
+      </div>
       <div class="cb">
-        <div class="srow">
-          <div class="sb"><div class="sv g" id="sW">0</div><div class="sl">Wins</div></div>
-          <div class="sb"><div class="sv r" id="sL">0</div><div class="sl">Losses</div></div>
-          <div class="sb"><div class="sv y" id="sWR">0%</div><div class="sl">Win Rate</div></div>
-        </div>
-        <div class="srow">
-          <div class="sb"><div class="sv b" id="sPnL">$0.00</div><div class="sl">P&amp;L</div></div>
-          <div class="sb"><div class="sv" id="sStk">$0.50</div><div class="sl">Next Stake</div></div>
-          <div class="sb"><div class="sv" id="sMl">0</div><div class="sl">Mart. Step</div></div>
-        </div>
-        <div style="font-size:10px;color:var(--muted);margin-bottom:6px">MARTINGALE PROGRESS</div>
-        <div class="msteps" id="msteps"></div>
+        <label>Starting Balance (USD)</label>
+        <input type="number" id="startBal" value="7.50" min="1" step="0.50" onchange="updOperation()"/>
+        <div style="font-size:10px;color:var(--muted);margin-bottom:8px">Update this with your real current balance</div>
+
+        <!-- 7-day history -->
+        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Last 7 Days</div>
+        <div class="hist-grid" id="histGrid"></div>
+        <button class="btn ban" style="margin-top:4px;font-size:11px;padding:7px" onclick="resetOperation()">Reset Operation Data</button>
       </div>
     </div>
 
-    <!-- SMART BARRIER SWITCHER -->
+    <!-- DAILY SESSION -->
     <div class="card">
       <div class="ch">
-        <span class="ct">🔄 Smart Barrier Switch</span>
-        <span class="badge" id="modeBadge" style="background:rgba(0,229,160,.12);color:var(--accent);border:1px solid rgba(0,229,160,.3)">PROFIT MODE</span>
+        <span class="ct">Today's Session</span>
+        <span class="badge" id="sesBadge" style="background:rgba(0,229,160,.12);color:var(--accent);border:1px solid rgba(0,229,160,.3)">Idle</span>
       </div>
       <div class="cb">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-          <div class="mode-box mode-profit" id="profitBox">
-            <div class="mode-title profit">💰 Profit Mode</div>
-            <div class="mode-digits" style="color:var(--accent)" id="profitDigits">Over 2 / Under 8</div>
-            <div class="mode-sub">Higher payout | ~80% win rate</div>
+        <div class="alert" id="mainAlert"></div>
+        <div class="cooldown-box" id="cooldownBox">
+          <div style="font-size:12px;color:var(--gold);font-weight:600">⏸ COOLDOWN — Loss streak detected</div>
+          <div class="cooldown-timer" id="cooldownTimer">5:00</div>
+          <div class="cooldown-msg">Bot paused. Resuming automatically after cooldown.</div>
+        </div>
+
+        <div class="day-grid">
+          <div class="day-box">
+            <div class="day-val g" id="dWins">0</div>
+            <div class="day-lbl">Wins</div>
           </div>
-          <div class="mode-box mode-safe" id="safeBox" style="opacity:0.5">
-            <div class="mode-title safe">🛡 Safe Mode</div>
-            <div class="mode-digits" style="color:var(--warn)" id="safeDigits">Over 0 / Under 9</div>
-            <div class="mode-sub">Recovery mode | ~99% win rate</div>
+          <div class="day-box">
+            <div class="day-val r" id="dLosses">0</div>
+            <div class="day-lbl">Losses</div>
+          </div>
+          <div class="day-box">
+            <div class="day-val y" id="dWR">0%</div>
+            <div class="day-lbl">Win Rate</div>
+          </div>
+          <div class="day-box">
+            <div class="day-val b" id="dPnL">$0.00</div>
+            <div class="day-lbl">Today P&L</div>
           </div>
         </div>
 
-        <label>Switch to Safe Mode after X losses</label>
-        <input type="number" id="switchAfter" value="3" min="1" max="10"/>
-
-        <label>Return to Profit Mode after X wins</label>
-        <input type="number" id="returnAfter" value="5" min="1" max="20"/>
-
-        <label>Profit Mode Barriers</label>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-          <div>
-            <div style="font-size:10px;color:var(--muted);margin-bottom:4px">OVER</div>
-            <select id="profitOver">
-              <option value="1">Over 1</option>
-              <option value="2" selected>Over 2</option>
-              <option value="3">Over 3</option>
-              <option value="4">Over 4</option>
-            </select>
-          </div>
-          <div>
-            <div style="font-size:10px;color:var(--muted);margin-bottom:4px">UNDER</div>
-            <select id="profitUnder">
-              <option value="6">Under 6</option>
-              <option value="7">Under 7</option>
-              <option value="8" selected>Under 8</option>
-              <option value="9">Under 9</option>
-            </select>
-          </div>
+        <!-- TP progress -->
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:4px">
+          <span>Take Profit Progress</span>
+          <span id="tpPct">0%</span>
+        </div>
+        <div class="prog-bar-wrap">
+          <div class="prog-bar prog-tp" id="tpBar" style="width:0%"></div>
         </div>
 
-        <label>Safe Mode Barriers</label>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-          <div>
-            <div style="font-size:10px;color:var(--muted);margin-bottom:4px">OVER</div>
-            <select id="safeOver">
-              <option value="0" selected>Over 0</option>
-              <option value="1">Over 1</option>
-            </select>
-          </div>
-          <div>
-            <div style="font-size:10px;color:var(--muted);margin-bottom:4px">UNDER</div>
-            <select id="safeUnder">
-              <option value="9" selected>Under 9</option>
-              <option value="8">Under 8</option>
-            </select>
-          </div>
+        <!-- SL progress -->
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:4px;margin-top:8px">
+          <span>Stop Loss Used</span>
+          <span id="slPct">0%</span>
+        </div>
+        <div class="prog-bar-wrap">
+          <div class="prog-bar prog-sl" id="slBar" style="width:0%"></div>
         </div>
 
-        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;margin-bottom:6px">Switch History</div>
-        <div class="switch-log" id="switchLog">
-          <div class="switch-entry" style="color:var(--muted)">No switches yet. Bot will auto-switch barriers.</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TIME HEATMAP -->
-    <div class="card">
-      <div class="ch">
-        <span class="ct">⏰ Best Trading Times</span>
-        <div style="display:flex;gap:6px;align-items:center">
-          <span class="badge by" id="tzBadge">UTC</span>
-          <button class="btn ban" style="width:auto;padding:4px 10px;margin:0;font-size:10px" onclick="clearHeatmap()">Reset</button>
-        </div>
-      </div>
-      <div class="cb">
-        <div class="current-time" id="currentTime">--:--:--</div>
-        <div class="current-date" id="currentDate">--</div>
-        <div class="time-alert" id="timeAlert"></div>
-        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">24-Hour Win Rate Heatmap</div>
-        <div class="heatmap-grid" id="heatmapGrid"></div>
         <div class="sdiv"></div>
-        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;margin-bottom:6px">Best Hours</div>
-        <div class="best-times" id="bestTimes"><span style="color:var(--muted);font-size:12px">Build data by trading!</span></div>
-        <div class="sdiv"></div>
-        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;margin-bottom:6px">Avoid These Hours</div>
-        <div class="best-times" id="worstTimes"><span style="color:var(--muted);font-size:12px">No bad hours yet.</span></div>
-        <div style="font-size:10px;color:var(--muted);margin-top:8px">🟢 ≥90% &nbsp; 🔵 75-89% &nbsp; 🟡 50-74% &nbsp; 🔴 &lt;50%</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div class="day-box">
+            <div class="day-val" id="dStreak" style="color:var(--accent3)">0</div>
+            <div class="day-lbl">Cur. Streak</div>
+          </div>
+          <div class="day-box">
+            <div class="day-val" id="dMode" style="color:var(--accent)">PROFIT</div>
+            <div class="day-lbl">Mode</div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -296,27 +380,62 @@ input:focus,select:focus{border-color:var(--accent)}
     <div class="card">
       <div class="ch">
         <span class="ct">Live Digit Analysis</span>
-        <div style="display:flex;gap:6px;align-items:center">
+        <div style="display:flex;gap:5px;align-items:center">
           <span class="badge by" id="sampBadge">0 ticks</span>
-          <button class="btn ban" style="width:auto;padding:4px 10px;margin:0;font-size:10px" onclick="runAnalysis()">↻ Refresh</button>
+          <button class="btn ban" style="width:auto;padding:3px 9px;margin:0;font-size:10px" onclick="runAnalysis()">↻ Refresh</button>
         </div>
       </div>
       <div class="cb">
-        <div class="sug"><div class="sugt">🤖 Smart Recommendation</div><div id="sugC" style="color:var(--muted);font-size:12px">Connect and wait for ticks.</div></div>
+        <div class="sug">
+          <div class="sugt">🤖 Smart Recommendation</div>
+          <div id="sugC" style="color:var(--muted);font-size:12px">Connect and wait for ticks.</div>
+        </div>
         <div class="fgrid" id="fgrid"></div>
         <div class="sdiv"></div>
-        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;margin-bottom:6px">Last 30 Digits</div>
+        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;margin-bottom:5px">Last 30 Digits</div>
         <div class="tape" id="tape"></div>
         <div class="sdiv"></div>
-        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">Streak & Pattern</div>
+        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;margin-bottom:6px">Streak & Pattern</div>
         <div id="strk" style="font-size:12px;color:var(--muted)">No data yet.</div>
       </div>
     </div>
 
-    <!-- LOG -->
+    <!-- TIME HEATMAP -->
     <div class="card">
-      <div class="ch"><span class="ct">Trade Log</span><button onclick="clearLog()" style="background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer">Clear</button></div>
-      <div class="cb" style="padding:10px"><div class="lw" id="tlog"><div class="le info"><span class="lt">--:--:--</span><span class="lm">Bot ready. Paste token and connect.</span></div></div></div>
+      <div class="ch">
+        <span class="ct">⏰ Best Trading Times</span>
+        <div style="display:flex;gap:5px;align-items:center">
+          <span class="badge by" id="tzBadge">UTC</span>
+          <button class="btn ban" style="width:auto;padding:3px 9px;margin:0;font-size:10px" onclick="clearHeatmap()">Reset</button>
+        </div>
+      </div>
+      <div class="cb">
+        <div class="ctime" id="cTime">--:--:--</div>
+        <div class="cdate" id="cDate">--</div>
+        <div class="alert" id="timeAlert"></div>
+        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;margin-bottom:6px">Win Rate By Hour</div>
+        <div class="hmgrid" id="hmGrid"></div>
+        <div class="sdiv"></div>
+        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;margin-bottom:5px">Best Hours</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px" id="bestH"><span style="color:var(--muted);font-size:12px">Trade to build data!</span></div>
+        <div class="sdiv"></div>
+        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;margin-bottom:5px">Avoid</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px" id="worstH"><span style="color:var(--muted);font-size:12px">No bad hours yet.</span></div>
+        <div style="font-size:10px;color:var(--muted);margin-top:8px">🟢≥90% 🔵75-89% 🟡50-74% 🔴&lt;50%</div>
+      </div>
+    </div>
+
+    <!-- TRADE LOG -->
+    <div class="card">
+      <div class="ch">
+        <span class="ct">Trade Log</span>
+        <button onclick="clearLog()" style="background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer">Clear</button>
+      </div>
+      <div class="cb" style="padding:8px">
+        <div class="lw" id="tlog">
+          <div class="le info"><span class="lt">--:--:--</span><span class="lm">Bot ready. Connect and start trading.</span></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -324,149 +443,237 @@ input:focus,select:focus{border-color:var(--accent)}
 <script>
 const WS_URL='wss://ws.binaryws.com/websockets/v3?app_id=36544';
 let ws=null,connected=false,running=false,autoD=true;
-let mkt='R_50',mktN='Vol 50',ct='DIGITOVER';
-let ovD=2,unD=8,baseStk=0.5,curStk=0.5,mMult=2.1,maxMS=4,mStep=0;
+let mkt='R_75',mktN='Vol 75',ct='BOTH';
+let ovD=2,unD=8;
+let stake=0.35;
 let pnl=0,wins=0,losses=0,digits=[],pending=null,contracts={},tTout=null;
 
-// ── SMART BARRIER SWITCH STATE ─────────────────
-let inSafeMode=false;
-let consecLosses=0;
-let consecWinsInSafe=0;
+// BARRIER SWITCH
+let inSafeMode=false,consecLoss=0,consecWinSafe=0;
 
-function getSwitchAfter(){return parseInt(document.getElementById('switchAfter').value)||3;}
-function getReturnAfter(){return parseInt(document.getElementById('returnAfter').value)||5;}
-function getProfitOver(){return parseInt(document.getElementById('profitOver').value);}
-function getProfitUnder(){return parseInt(document.getElementById('profitUnder').value);}
-function getSafeOver(){return parseInt(document.getElementById('safeOver').value);}
-function getSafeUnder(){return parseInt(document.getElementById('safeUnder').value);}
+// COOLDOWN
+let inCooldown=false,cooldownInt=null;
 
-function applyProfitMode(){
-  inSafeMode=false;
-  consecWinsInSafe=0;
-  ovD=getProfitOver();
-  unD=getProfitUnder();
-  updDB();
-  document.getElementById('modeBadge').textContent='PROFIT MODE';
-  document.getElementById('modeBadge').style.background='rgba(0,229,160,.12)';
-  document.getElementById('modeBadge').style.color='var(--accent)';
-  document.getElementById('modeBadge').style.borderColor='rgba(0,229,160,.3)';
-  document.getElementById('profitBox').style.opacity='1';
-  document.getElementById('safeBox').style.opacity='0.5';
-  document.getElementById('profitDigits').textContent=`Over ${getProfitOver()} / Under ${getProfitUnder()}`;
-  addSwitchLog(`🟢 → PROFIT MODE | Over ${getProfitOver()} / Under ${getProfitUnder()}`);
-  addLog('info',`🔄 Switched to PROFIT MODE | Over ${getProfitOver()} / Under ${getProfitUnder()}`);
+// OPERATION DATA
+let opData=JSON.parse(localStorage.getItem('op1000')||'null')||{startBal:7.50,totalProfit:0,days:[],daysActive:0};
+let todayKey=new Date().toDateString();
+let todayData=opData.days.find(d=>d.date===todayKey)||{date:todayKey,pnl:0,w:0,l:0};
+
+// HOUR DATA
+let hourData=JSON.parse(localStorage.getItem('derivHD')||'null')||Array(24).fill(null).map(()=>({w:0,l:0}));
+
+function saveAll(){
+  // save today
+  const idx=opData.days.findIndex(d=>d.date===todayKey);
+  if(idx>=0)opData.days[idx]=todayData;
+  else opData.days.push(todayData);
+  opData.totalProfit=opData.days.reduce((a,d)=>a+d.pnl,0);
+  opData.daysActive=opData.days.filter(d=>d.w+d.l>0).length;
+  localStorage.setItem('op1000',JSON.stringify(opData));
+  localStorage.setItem('derivHD',JSON.stringify(hourData));
 }
 
-function applySafeMode(){
-  inSafeMode=true;
-  consecLosses=0;
-  consecWinsInSafe=0;
-  ovD=getSafeOver();
-  unD=getSafeUnder();
-  updDB();
-  document.getElementById('modeBadge').textContent='SAFE MODE';
-  document.getElementById('modeBadge').style.background='rgba(255,196,61,.12)';
-  document.getElementById('modeBadge').style.color='var(--warn)';
-  document.getElementById('modeBadge').style.borderColor='rgba(255,196,61,.3)';
-  document.getElementById('profitBox').style.opacity='0.5';
-  document.getElementById('safeBox').style.opacity='1';
-  document.getElementById('safeDigits').textContent=`Over ${getSafeOver()} / Under ${getSafeUnder()}`;
-  addSwitchLog(`🟡 → SAFE MODE | Over ${getSafeOver()} / Under ${getSafeUnder()} (${getSwitchAfter()} losses)`);
-  addLog('warn',`🔄 Switched to SAFE MODE | Over ${getSafeOver()} / Under ${getSafeUnder()}`);
+// ── OPERATION PANEL ──────────────────────────
+function updOperation(){
+  const startBal=parseFloat(document.getElementById('startBal').value)||7.50;
+  opData.startBal=startBal;
+  const currentBal=startBal+opData.totalProfit;
+  const target=1000;
+  const pct=Math.min((currentBal/target)*100,100);
+  document.getElementById('opBalance').textContent=`$${currentBal.toFixed(2)}`;
+  document.getElementById('opBar').style.width=`${Math.max(pct,0.3)}%`;
+  document.getElementById('opPct').textContent=`${pct.toFixed(2)}%`;
+  document.getElementById('opTotalProfit').textContent=`${opData.totalProfit>=0?'+':''}$${opData.totalProfit.toFixed(2)}`;
+  document.getElementById('opDays').textContent=opData.daysActive;
+  const avg=opData.daysActive>0?opData.totalProfit/opData.daysActive:0;
+  document.getElementById('opAvgDay').textContent=`$${avg.toFixed(2)}`;
+  const remaining=target-currentBal;
+  const daysLeft=avg>0?Math.ceil(remaining/avg):'∞';
+  document.getElementById('opDaysLeft').textContent=daysLeft;
+  updHistGrid();
 }
 
-function addSwitchLog(msg){
-  const log=document.getElementById('switchLog');
-  const time=new Date().toTimeString().slice(0,8);
-  const e=document.createElement('div');
-  e.className='switch-entry';
-  e.innerHTML=`<span style="color:var(--muted)">${time}</span> ${msg}`;
-  log.prepend(e);
-  while(log.children.length>20)log.removeChild(log.lastChild);
-}
-
-function checkBarrierSwitch(won){
-  if(!inSafeMode){
-    if(!won){
-      consecLosses++;
-      if(consecLosses>=getSwitchAfter()) applySafeMode();
-    } else {
-      consecLosses=0;
-    }
-  } else {
-    if(won){
-      consecWinsInSafe++;
-      if(consecWinsInSafe>=getReturnAfter()) applyProfitMode();
-    } else {
-      consecWinsInSafe=0;
-    }
-  }
-}
-
-// ── TIME HEATMAP ───────────────────────────────
-let hourData=JSON.parse(localStorage.getItem('derivHourData')||'null')||Array(24).fill(null).map(()=>({w:0,l:0}));
-function saveHourData(){try{localStorage.setItem('derivHourData',JSON.stringify(hourData));}catch(e){}}
-function recordHour(won){const h=new Date().getHours();if(won)hourData[h].w++;else hourData[h].l++;saveHourData();updateHeatmap();updateTimeAlert();updateBestWorst();}
-function clearHeatmap(){hourData=Array(24).fill(null).map(()=>({w:0,l:0}));saveHourData();updateHeatmap();updateBestWorst();addLog('info','Heatmap reset.');}
-function getHeatClass(wr,tot){if(tot<5)return'heat-none';if(wr>=90)return'heat-great';if(wr>=75)return'heat-good';if(wr>=50)return'heat-ok';return'heat-bad';}
-function getHeatColor(wr,tot){if(tot<5)return'var(--muted)';if(wr>=90)return'var(--accent)';if(wr>=75)return'var(--accent3)';if(wr>=50)return'var(--warn)';return'var(--danger)';}
-function updateHeatmap(){
-  const grid=document.getElementById('heatmapGrid');
-  const curH=new Date().getHours();
+function updHistGrid(){
+  const grid=document.getElementById('histGrid');
   grid.innerHTML='';
-  for(let h=0;h<24;h++){
-    const d=hourData[h],total=d.w+d.l,wr=total>0?Math.round(d.w/total*100):0;
+  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const last7=[];
+  for(let i=6;i>=0;i--){
+    const d=new Date();d.setDate(d.getDate()-i);
+    last7.push(d.toDateString());
+  }
+  last7.forEach((dk,i)=>{
+    const found=opData.days.find(d=>d.date===dk);
+    const isToday=dk===todayKey;
     const cell=document.createElement('div');
-    cell.className=`heat-cell ${getHeatClass(wr,total)}`;
-    if(h===curH)cell.style.outline='2px solid var(--accent)';
-    cell.innerHTML=`<div class="heat-hour">${String(h).padStart(2,'0')}:00${h===curH?' ◀':''}</div><div class="heat-wr" style="color:${getHeatColor(wr,total)}">${total>=5?wr+'%':'—'}</div><div class="heat-trades">${total>0?total+'t':''}</div>`;
+    const dow=new Date(dk).getDay();
+    cell.className=`hist-day${found&&found.pnl>0?' win':found&&found.pnl<0?' loss':''}${isToday?' today':''}`;
+    cell.innerHTML=`<div class="hd-day">${days[dow]}</div><div class="hd-pnl" style="color:${found?found.pnl>=0?'var(--green)':'var(--red)':'var(--muted)'}">${found?`${found.pnl>=0?'+':''}$${found.pnl.toFixed(2)}`:'—'}</div>`;
     grid.appendChild(cell);
+  });
+}
+
+function resetOperation(){
+  if(!confirm('Reset all operation data?'))return;
+  opData={startBal:parseFloat(document.getElementById('startBal').value)||7.50,totalProfit:0,days:[],daysActive:0};
+  todayData={date:todayKey,pnl:0,w:0,l:0};
+  saveAll();updOperation();addLog('info','Operation data reset.');
+}
+
+// ── DAILY SESSION ───────────────────────────
+function updDailyPanel(){
+  const tp=parseFloat(document.getElementById('tp').value)||2;
+  const sl=parseFloat(document.getElementById('sl').value)||1.5;
+  document.getElementById('dWins').textContent=wins;
+  document.getElementById('dLosses').textContent=losses;
+  const tot=wins+losses,wr=tot?Math.round(wins/tot*100):0;
+  const wrEl=document.getElementById('dWR');wrEl.textContent=`${wr}%`;
+  wrEl.style.color=wr>=70?'var(--green)':wr>=50?'var(--gold)':'var(--red)';
+  const pnlEl=document.getElementById('dPnL');
+  pnlEl.textContent=`${pnl>=0?'+':''}$${pnl.toFixed(2)}`;
+  pnlEl.style.color=pnl>0?'var(--green)':pnl<0?'var(--red)':'var(--accent3)';
+
+  // progress bars
+  const tpPct=Math.min(Math.max(pnl/tp*100,0),100);
+  const slPct=Math.min(Math.max(-pnl/sl*100,0),100);
+  document.getElementById('tpBar').style.width=`${tpPct}%`;
+  document.getElementById('slBar').style.width=`${slPct}%`;
+  document.getElementById('tpPct').textContent=`${tpPct.toFixed(0)}%`;
+  document.getElementById('slPct').textContent=`${slPct.toFixed(0)}%`;
+  document.getElementById('dMode').textContent=inSafeMode?'SAFE':'PROFIT';
+  document.getElementById('dMode').style.color=inSafeMode?'var(--gold)':'var(--accent)';
+}
+
+// ── BARRIER SWITCH ───────────────────────────
+function getSA(){return parseInt(document.getElementById('switchAfter').value)||3;}
+function getRA(){return parseInt(document.getElementById('returnAfter').value)||5;}
+
+function applyProfit(){
+  inSafeMode=false;consecWinSafe=0;
+  ovD=2;unD=8;updDB();
+  document.getElementById('modeBadge').textContent='PROFIT MODE';
+  document.getElementById('modeBadge').style.color='var(--accent)';
+  document.getElementById('profitCard').classList.add('active');
+  document.getElementById('safeCard').classList.remove('active');
+  document.getElementById('dMode').textContent='PROFIT';
+  document.getElementById('dMode').style.color='var(--accent)';
+  addLog('info',`🔄 → PROFIT MODE | Over ${ovD} / Under ${unD}`);
+  showAlert('mainAlert','info',`✅ Switched to PROFIT MODE — Over ${ovD} / Under ${unD}`);
+}
+
+function applySafe(){
+  inSafeMode=true;consecLoss=0;consecWinSafe=0;
+  ovD=0;unD=9;updDB();
+  document.getElementById('modeBadge').textContent='SAFE MODE';
+  document.getElementById('modeBadge').style.color='var(--gold)';
+  document.getElementById('profitCard').classList.remove('active');
+  document.getElementById('safeCard').classList.add('active');
+  document.getElementById('dMode').textContent='SAFE';
+  document.getElementById('dMode').style.color='var(--gold)';
+  addLog('warn',`🔄 → SAFE MODE | Over ${ovD} / Under ${unD}`);
+  showAlert('mainAlert','warn',`⚠️ Switched to SAFE MODE — ${getSA()} losses detected. Recovering...`);
+}
+
+function checkSwitch(won){
+  if(!inSafeMode){
+    if(!won){consecLoss++;if(consecLoss>=getSA())applySafe();}
+    else consecLoss=0;
+  } else {
+    if(won){consecWinSafe++;if(consecWinSafe>=getRA())applyProfit();}
+    else consecWinSafe=0;
+  }
+  // streak display
+  const streak=inSafeMode?consecWinSafe:consecLoss;
+  document.getElementById('dStreak').textContent=won?`+${wins}W`:`${losses}L`;
+  document.getElementById('dStreak').style.color=won?'var(--green)':'var(--red)';
+}
+
+// ── COOLDOWN ─────────────────────────────────
+function startCooldown(){
+  if(inCooldown)return;
+  inCooldown=true;running=false;
+  const mins=parseInt(document.getElementById('cooldownMins').value)||5;
+  let secs=mins*60;
+  document.getElementById('cooldownBox').style.display='block';
+  document.getElementById('stopBtn').disabled=true;
+  document.getElementById('startBtn').disabled=true;
+  addLog('warn',`⏸ Cooldown started — ${mins} minutes`);
+  showAlert('mainAlert','warn',`⏸ ${mins}-minute cooldown. Bot pausing to protect account.`);
+  cooldownInt=setInterval(()=>{
+    secs--;
+    const m=Math.floor(secs/60),s=secs%60;
+    document.getElementById('cooldownTimer').textContent=`${m}:${String(s).padStart(2,'0')}`;
+    if(secs<=0){
+      clearInterval(cooldownInt);
+      inCooldown=false;
+      consecLoss=0;
+      document.getElementById('cooldownBox').style.display='none';
+      document.getElementById('startBtn').disabled=false;
+      addLog('info','✅ Cooldown complete. You can resume trading.');
+      showAlert('mainAlert','good','✅ Cooldown done! Check the market and tap Start Bot.');
+    }
+  },1000);
+}
+
+// ── HOUR HEATMAP ─────────────────────────────
+function recHour(won){const h=new Date().getHours();if(won)hourData[h].w++;else hourData[h].l++;saveAll();updHeatmap();updBestWorst();}
+function clearHeatmap(){hourData=Array(24).fill(null).map(()=>({w:0,l:0}));saveAll();updHeatmap();updBestWorst();addLog('info','Heatmap reset.');}
+function hClass(wr,t){if(t<5)return'hn';if(wr>=90)return'hgr';if(wr>=75)return'hgo';if(wr>=50)return'hok';return'hbd';}
+function hColor(wr,t){if(t<5)return'var(--muted)';if(wr>=90)return'var(--green)';if(wr>=75)return'var(--accent3)';if(wr>=50)return'var(--gold)';return'var(--red)';}
+function updHeatmap(){
+  const g=document.getElementById('hmGrid'),ch=new Date().getHours();
+  g.innerHTML='';
+  for(let h=0;h<24;h++){
+    const d=hourData[h],t=d.w+d.l,wr=t>0?Math.round(d.w/t*100):0;
+    const c=document.createElement('div');c.className=`hc ${hClass(wr,t)}`;
+    if(h===ch)c.style.outline='2px solid var(--accent)';
+    c.innerHTML=`<div class="hh">${String(h).padStart(2,'0')}${h===ch?'◀':''}</div><div class="hw" style="color:${hColor(wr,t)}">${t>=5?wr+'%':'—'}</div><div class="ht">${t>0?t+'t':''}</div>`;
+    g.appendChild(c);
   }
 }
-function updateTimeAlert(){
-  const alert=document.getElementById('timeAlert');
-  const h=new Date().getHours(),d=hourData[h],total=d.w+d.l;
-  if(total<5){alert.style.display='none';return;}
-  const wr=Math.round(d.w/total*100);
-  alert.style.display='block';
-  if(wr>=90){alert.className='time-alert good';alert.innerHTML=`✅ <b>Great time!</b> ${wr}% win rate from ${total} trades.`;}
-  else if(wr>=75){alert.className='time-alert good';alert.innerHTML=`🔵 <b>Good time.</b> ${wr}% win rate from ${total} trades.`;}
-  else if(wr>=50){alert.className='time-alert warn';alert.innerHTML=`⚠️ <b>Caution.</b> Only ${wr}% win rate this hour.`;}
-  else{alert.className='time-alert bad';alert.innerHTML=`🔴 <b>Avoid now!</b> Only ${wr}% win rate this hour.`;}
+function updBestWorst(){
+  const r=hourData.map((d,h)=>{const t=d.w+d.l,wr=t>=5?Math.round(d.w/t*100):-1;return{h,wr,t};}).filter(x=>x.wr>=0).sort((a,b)=>b.wr-a.wr);
+  const good=r.filter(x=>x.wr>=75),bad=r.filter(x=>x.wr<60).reverse();
+  document.getElementById('bestH').innerHTML=good.length?good.slice(0,6).map(x=>`<span class="tpill tpg">${String(x.h).padStart(2,'0')}:00 ${x.wr}%</span>`).join(''):'<span style="color:var(--muted);font-size:12px">Keep trading!</span>';
+  document.getElementById('worstH').innerHTML=bad.length?bad.slice(0,6).map(x=>`<span class="tpill tpb">${String(x.h).padStart(2,'0')}:00 ${x.wr}%</span>`).join(''):'<span style="color:var(--muted);font-size:12px">No bad hours yet.</span>';
 }
-function updateBestWorst(){
-  const best=document.getElementById('bestTimes'),worst=document.getElementById('worstTimes');
-  const ranked=hourData.map((d,h)=>{const total=d.w+d.l,wr=total>=5?Math.round(d.w/total*100):-1;return{h,wr,total};}).filter(x=>x.wr>=0).sort((a,b)=>b.wr-a.wr);
-  const good=ranked.filter(x=>x.wr>=75),bad=ranked.filter(x=>x.wr<60).reverse();
-  best.innerHTML=good.length===0?'<span style="color:var(--muted);font-size:12px">Keep trading!</span>':good.slice(0,6).map(x=>`<span class="time-pill good">${String(x.h).padStart(2,'0')}:00 ${x.wr}%</span>`).join('');
-  worst.innerHTML=bad.length===0?'<span style="color:var(--muted);font-size:12px">No bad hours yet.</span>':bad.slice(0,6).map(x=>`<span class="time-pill bad">${String(x.h).padStart(2,'0')}:00 ${x.wr}%</span>`).join('');
+function updTimeAlert(){
+  const a=document.getElementById('timeAlert'),h=new Date().getHours(),d=hourData[h],t=d.w+d.l;
+  if(t<5){a.style.display='none';return;}
+  const wr=Math.round(d.w/t*100);a.style.display='block';
+  if(wr>=90){a.className='alert good';a.innerHTML=`✅ <b>Great time!</b> ${wr}% win rate (${t} trades this hour)`;}
+  else if(wr>=75){a.className='alert good';a.innerHTML=`🔵 <b>Good time.</b> ${wr}% win rate (${t} trades)`;}
+  else if(wr>=50){a.className='alert warn';a.innerHTML=`⚠️ <b>Moderate.</b> Only ${wr}% win rate this hour.`;}
+  else{a.className='alert bad';a.innerHTML=`🔴 <b>Risky!</b> Only ${wr}% win rate this hour. Consider waiting.`;}
 }
-function updateClock(){
-  const now=new Date();
-  document.getElementById('currentTime').textContent=now.toTimeString().slice(0,8);
-  document.getElementById('currentDate').textContent=now.toDateString();
-  const off=now.getTimezoneOffset();
+function showAlert(id,type,msg){
+  const a=document.getElementById(id);a.className=`alert ${type}`;a.innerHTML=msg;a.style.display='block';
+  setTimeout(()=>{a.style.display='none';},8000);
+}
+function updClock(){
+  const n=new Date();
+  document.getElementById('cTime').textContent=n.toTimeString().slice(0,8);
+  document.getElementById('cDate').textContent=n.toDateString();
+  const off=n.getTimezoneOffset();
   document.getElementById('tzBadge').textContent='UTC'+(off<=0?'+':'-')+Math.abs(off/60);
 }
 
-// ── INIT ──────────────────────────────────────
+// ── INIT ─────────────────────────────────────
 window.onload=()=>{
   buildDB('drO','o');buildDB('drU','u');
-  buildMS();buildFG();setCt('BOTH');
-  ovD=getProfitOver();unD=getProfitUnder();updDB();
-  addLog('info','Ready. Paste token and connect.');
-  updateHeatmap();updateBestWorst();updateTimeAlert();
-  setInterval(updateClock,1000);setInterval(updateTimeAlert,60000);
-  updateClock();
-  document.getElementById('profitDigits').textContent=`Over ${getProfitOver()} / Under ${getProfitUnder()}`;
-  document.getElementById('safeDigits').textContent=`Over ${getSafeOver()} / Under ${getSafeUnder()}`;
+  buildFG();setCt('BOTH');ovD=2;unD=8;updDB();
+  addLog('info','Ready. Connect your API token.');
+  updOperation();updHeatmap();updBestWorst();updTimeAlert();
+  setInterval(updClock,1000);setInterval(updTimeAlert,60000);
+  updClock();
+  document.getElementById('profitLbl').textContent=`O${ovD} / U${unD}`;
 };
 
 function buildDB(id,mode){
   const r=document.getElementById(id);r.innerHTML='';
   for(let d=0;d<=9;d++){const b=document.createElement('div');b.className='db';b.textContent=d;b.onclick=()=>selD(d,mode);r.appendChild(b);}
 }
-function selD(d,m){m==='o'?ovD=d:unD=d;updDB();addLog('info',`${m==='o'?'OVER':'UNDER'} barrier → ${d}`);}
+function selD(d,m){m==='o'?ovD=d:unD=d;updDB();addLog('info',`${m==='o'?'OVER':'UNDER'} → ${d}`);}
 function updDB(){
   document.querySelectorAll('#drO .db').forEach(b=>b.className='db'+(+b.textContent===ovD?' ao':''));
   document.querySelectorAll('#drU .db').forEach(b=>b.className='db'+(+b.textContent===unD?' au':''));
@@ -482,10 +689,11 @@ function setCt(t){
   ct=t;['cO','cU','cB'].forEach(id=>document.getElementById(id).className='tb');
   if(t==='DIGITOVER'){document.getElementById('cO').className='tb ao';document.getElementById('drU').style.display='none';document.getElementById('ulbl').style.display='none';}
   else if(t==='DIGITUNDER'){document.getElementById('cU').className='tb au';document.getElementById('drU').style.display='none';document.getElementById('ulbl').style.display='none';}
-  else{document.getElementById('cB').className='tb ao';document.getElementById('drU').style.display='flex';document.getElementById('ulbl').style.display='block';}
+  else{document.getElementById('cB').className='tb ag';document.getElementById('drU').style.display='flex';document.getElementById('ulbl').style.display='block';}
 }
-function setAuto(v){autoD=v;document.getElementById('aOn').className=v?'tb ao':'tb';document.getElementById('aOff').className=!v?'tb ao':'tb';}
+function setAuto(v){autoD=v;document.getElementById('aOn').className=v?'tb ag':'tb';document.getElementById('aOff').className=!v?'tb ag':'tb';}
 
+// ── WEBSOCKET ─────────────────────────────────
 function connectWS(){
   const tok=document.getElementById('tok').value.trim();
   if(!tok){showErr('Please paste your API token.');return;}
@@ -494,7 +702,7 @@ function connectWS(){
   document.getElementById('conBtn').disabled=true;
   try{ws=new WebSocket(WS_URL);}catch(e){showErr('WebSocket error: '+e.message);setStat('err');document.getElementById('conBtn').disabled=false;return;}
   ws.onopen=()=>{addLog('info','Connected. Authorizing...');ws.send(JSON.stringify({authorize:tok}));};
-  ws.onmessage=e=>{try{handleMsg(JSON.parse(e.data));}catch(x){addLog('warn','Parse error');}};
+  ws.onmessage=e=>{try{handleMsg(JSON.parse(e.data));}catch(x){}};
   ws.onerror=()=>{showErr('Connection failed. Check token & internet.');setStat('err');document.getElementById('conBtn').disabled=false;};
   ws.onclose=e=>{
     connected=false;running=false;setStat('off');
@@ -507,7 +715,7 @@ function connectWS(){
 function disconnectWS(){if(ws){ws.close();ws=null;}}
 
 function handleMsg(m){
-  if(m.error){showErr(`Error [${m.error.code}]: ${m.error.message}`);addLog('warn',`${m.error.message}`);return;}
+  if(m.error){showErr(`[${m.error.code}]: ${m.error.message}`);addLog('warn',m.error.message);return;}
   if(m.msg_type==='authorize'){
     hideErr();connected=true;setStat('on');
     addLog('info',`✅ ${m.authorize.loginid} | Balance: ${m.authorize.balance} ${m.authorize.currency}`);
@@ -517,11 +725,12 @@ function handleMsg(m){
     subTicks();ws.send(JSON.stringify({proposal_open_contract:1,subscribe:1}));
   }
   if(m.msg_type==='tick')procTick(m.tick);
-  if(m.msg_type==='buy'&&m.buy){contracts[m.buy.contract_id]={stk:curStk,type:pending};addLog('info',`📋 ${pending} | $${curStk.toFixed(2)} | ID:${m.buy.contract_id}`);}
+  if(m.msg_type==='buy'&&m.buy){contracts[m.buy.contract_id]={stk:stake,type:pending};addLog('info',`📋 ${pending} | $${stake.toFixed(2)} | ${inSafeMode?'🛡':'💰'}`);}
   if(m.msg_type==='proposal_open_contract'&&m.proposal_open_contract?.is_sold)
     handleResult(m.proposal_open_contract.contract_id,parseFloat(m.proposal_open_contract.profit));
 }
-function subTicks(){if(!connected||!ws)return;ws.send(JSON.stringify({ticks:mkt,subscribe:1}));addLog('info',`Subscribed to ${mktN}`);}
+function subTicks(){if(!connected||!ws)return;ws.send(JSON.stringify({ticks:mkt,subscribe:1}));addLog('info',`Subscribed: ${mktN}`);}
+
 function procTick(tick){
   const p=tick.quote.toString(),d=parseInt(p[p.length-1]);
   if(isNaN(d))return;
@@ -529,13 +738,13 @@ function procTick(tick){
   updTape(d);
   document.getElementById('sampBadge').textContent=`${digits.length} ticks`;
   if(digits.length%5===0)updFB();
-  if(digits.length%20===0&&autoD)autoSel();
+  if(digits.length%20===0&&autoD&&!inSafeMode)autoSel();
   if(digits.length%10===0)updStrk();
 }
 
 function runAnalysis(){
   if(digits.length<10){addLog('warn','Need more ticks.');return;}
-  updFB();updStrk();autoSel();
+  updFB();updStrk();if(!inSafeMode)autoSel();
 }
 function getCounts(){const c=Array(10).fill(0);digits.forEach(d=>c[d]++);return c;}
 function updFB(){
@@ -545,14 +754,13 @@ function updFB(){
     const pct=Math.round(v/tot*100);
     const bar=document.getElementById(`b${i}`),pe=document.getElementById(`p${i}`),ce=document.getElementById(`c${i}`);
     if(!bar)return;
-    bar.style.width=`${Math.max(pct*1.5,4)}%`;pe.textContent=`${pct}%`;ce.textContent=v;
+    bar.style.width=`${Math.max(pct*1.5,3)}%`;pe.textContent=`${pct}%`;ce.textContent=v;
     bar.style.background=i===hot?'rgba(255,71,87,.6)':i===cold?'rgba(0,229,160,.5)':dc(i)+'44';
   });
 }
 function autoSel(){
-  if(inSafeMode)return; // don't override safe mode barriers
   const c=getCounts(),tot=digits.length;if(!tot)return;
-  let bO=getProfitOver(),bU=getProfitUnder(),sO=0,sU=0;
+  let bO=2,bU=8,sO=0,sU=0;
   for(let b=0;b<=8;b++){const s=c.slice(b+1).reduce((a,v)=>a+v,0);if(s>sO){sO=s;bO=b;}}
   for(let b=1;b<=9;b++){const s=c.slice(0,b).reduce((a,v)=>a+v,0);if(s>sU){sU=s;bU=b;}}
   ovD=bO;unD=bU;updDB();
@@ -562,9 +770,9 @@ function autoSel(){
   document.getElementById('sugC').innerHTML=`
     <div class="sugr"><span style="color:var(--over);font-weight:600;font-family:monospace">▲ OVER ${bO}</span><span>${op}% ${cf(op)}</span></div>
     <div class="sugr"><span style="color:var(--under);font-weight:600;font-family:monospace">▼ UNDER ${bU}</span><span>${up}% ${cf(up)}</span></div>
-    <div class="sdiv" style="margin:8px 0"></div>
+    <div class="sdiv" style="margin:6px 0"></div>
     <div style="font-size:11px;color:var(--muted)">Last 20: <span style="color:var(--over)">${rO} OVER ${bO}</span> | <span style="color:var(--under)">${rU} UNDER ${bU}</span></div>
-    <div style="margin-top:6px;font-size:11px;color:var(--accent)">Sample: ${tot} ticks</div>`;
+    <div style="margin-top:5px;font-size:11px;color:var(--accent)">Sample: ${tot} ticks</div>`;
 }
 function updStrk(){
   const el=document.getElementById('strk');
@@ -574,12 +782,12 @@ function updStrk(){
   const l10=digits.slice(-10),rO=l10.filter(d=>d>ovD).length,rU=l10.filter(d=>d<unD).length;
   const dots=l10.map(d=>`<span class="sdot" style="background:${d>ovD?'var(--over)':d<unD?'var(--under)':'var(--border)'}"></span>`).join('');
   el.innerHTML=`
-    <div style="margin-bottom:8px"><span style="color:var(--muted);font-size:11px">LAST: </span>
+    <div style="margin-bottom:6px"><span style="color:var(--muted);font-size:11px">LAST: </span>
     <span style="font-family:monospace;font-size:16px;font-weight:700;color:${cur>ovD?'var(--over)':cur<unD?'var(--under)':'var(--text)'}">${cur}</span>
     <span style="color:var(--muted);font-size:11px;margin-left:8px">prev: ${prv??'—'}</span></div>
-    <div style="margin-bottom:8px"><span style="color:var(--muted);font-size:11px">STREAK OF ${cur}: </span>
-    <span style="font-family:monospace;font-weight:700;color:${sk>=3?'var(--warn)':'var(--text)'}">${sk}× ${sk>=3?'⚠':''}</span></div>
-    <div style="display:flex;gap:4px;margin-bottom:6px">${dots}</div>
+    <div style="margin-bottom:6px"><span style="color:var(--muted);font-size:11px">STREAK: </span>
+    <span style="font-family:monospace;font-weight:700;color:${sk>=3?'var(--gold)':'var(--text)'}">${sk}× ${sk>=3?'⚠':''}</span></div>
+    <div style="display:flex;gap:3px;margin-bottom:5px">${dots}</div>
     <div style="font-size:11px"><span style="color:var(--over)">▲ ${rO}/10 Over ${ovD}</span> &nbsp; <span style="color:var(--under)">▼ ${rU}/10 Under ${unD}</span></div>`;
 }
 function updTape(d){
@@ -590,37 +798,53 @@ function updTape(d){
   tape.prepend(el);while(tape.children.length>30)tape.removeChild(tape.lastChild);
 }
 
+// ── BOT LOGIC ─────────────────────────────────
 function startBot(){
   if(!connected){addLog('warn','Not connected.');return;}
-  baseStk=parseFloat(document.getElementById('bstk').value);
-  mMult=parseFloat(document.getElementById('mmt').value);
-  maxMS=parseInt(document.getElementById('mms').value);
-  curStk=baseStk;mStep=0;wins=0;losses=0;pnl=0;running=true;
-  consecLosses=0;consecWinsInSafe=0;inSafeMode=false;
-  applyProfitMode();
-  buildMS();updStats();
-  document.getElementById('startBtn').disabled=true;document.getElementById('stopBtn').disabled=false;
-  document.getElementById('sesBadge').textContent='Running';document.getElementById('sesBadge').className='badge bg';
-  addLog('info',`🚀 Started | Base:$${baseStk} | Profit:Over${getProfitOver()}/Under${getProfitUnder()} | Safe:Over${getSafeOver()}/Under${getSafeUnder()}`);
-  updateTimeAlert();
+  if(inCooldown){addLog('warn','Still in cooldown. Please wait.');return;}
+  stake=parseFloat(document.getElementById('bstk').value)||0.35;
+  wins=0;losses=0;pnl=0;running=true;
+  consecLoss=0;consecWinSafe=0;inSafeMode=false;
+  applyProfit();
+  document.getElementById('startBtn').disabled=true;
+  document.getElementById('stopBtn').disabled=false;
+  document.getElementById('sesBadge').textContent='Running';
+  document.getElementById('sesBadge').style.color='var(--accent)';
+  addLog('info',`🚀 Started | Stake:$${stake} | TP:$${document.getElementById('tp').value} | SL:$${document.getElementById('sl').value} | No Martingale`);
+  updTimeAlert();
   runTrade();
 }
 function stopBot(){
   running=false;if(tTout)clearTimeout(tTout);
-  document.getElementById('startBtn').disabled=false;document.getElementById('stopBtn').disabled=true;
-  document.getElementById('sesBadge').textContent='Stopped';document.getElementById('sesBadge').className='badge br';
-  addLog('warn',`⏹ Stopped | P&L:$${pnl.toFixed(2)} | W:${wins} L:${losses}`);
+  document.getElementById('startBtn').disabled=false;
+  document.getElementById('stopBtn').disabled=true;
+  document.getElementById('sesBadge').textContent='Stopped';
+  document.getElementById('sesBadge').style.color='var(--danger)';
+  todayData.pnl=pnl;todayData.w=wins;todayData.l=losses;
+  saveAll();updOperation();
+  addLog('warn',`⏹ Stopped | P&L:${pnl>=0?'+':''}$${pnl.toFixed(2)} | W:${wins} L:${losses}`);
 }
 function runTrade(){
-  if(!running||!connected||!ws)return;
+  if(!running||!connected||!ws||inCooldown)return;
   if(autoD&&digits.length>=20&&!inSafeMode)autoSel();
-  const tpv=parseFloat(document.getElementById('tp').value),slv=parseFloat(document.getElementById('sl').value);
-  if(pnl>=tpv){addLog('win',`🎯 Take Profit! +$${pnl.toFixed(2)}`);stopBot();return;}
-  if(pnl<=-slv){addLog('loss',`🛑 Stop Loss! $${pnl.toFixed(2)}`);stopBot();return;}
-  updStkDisp();
-  if(ct==='BOTH'){placeTrade('DIGITOVER',ovD,curStk/2);placeTrade('DIGITUNDER',unD,curStk/2);}
-  else if(ct==='DIGITOVER')placeTrade('DIGITOVER',ovD,curStk);
-  else placeTrade('DIGITUNDER',unD,curStk);
+  const tp=parseFloat(document.getElementById('tp').value)||2;
+  const sl=parseFloat(document.getElementById('sl').value)||1.5;
+  if(pnl>=tp){
+    addLog('win',`🎯 DAILY TARGET HIT! +$${pnl.toFixed(2)}`);
+    showAlert('mainAlert','good',`🎯 Daily target hit! +$${pnl.toFixed(2)} — Come back tomorrow!`);
+    todayData.pnl=pnl;todayData.w=wins;todayData.l=losses;
+    saveAll();updOperation();stopBot();return;
+  }
+  if(pnl<=-sl){
+    addLog('loss',`🛑 DAILY LOSS LIMIT! $${pnl.toFixed(2)}`);
+    showAlert('mainAlert','bad',`🛑 Daily loss limit hit. $${pnl.toFixed(2)} — Stop for today!`);
+    todayData.pnl=pnl;todayData.w=wins;todayData.l=losses;
+    saveAll();updOperation();stopBot();return;
+  }
+  updDailyPanel();
+  if(ct==='BOTH'){placeTrade('DIGITOVER',ovD,stake/2);placeTrade('DIGITUNDER',unD,stake/2);}
+  else if(ct==='DIGITOVER')placeTrade('DIGITOVER',ovD,stake);
+  else placeTrade('DIGITUNDER',unD,stake);
 }
 function placeTrade(type,barrier,stk){
   pending=type;const amt=Math.max(parseFloat(stk.toFixed(2)),0.35);
@@ -628,19 +852,25 @@ function placeTrade(type,barrier,stk){
 }
 function handleResult(id,profit){
   pnl+=profit;const won=profit>0;
-  checkBarrierSwitch(won);
-  recordHour(won);
-  if(won){wins++;mStep=0;curStk=parseFloat(document.getElementById('bstk').value);addLog('win',`✅ WIN +$${Math.abs(profit).toFixed(2)} | P&L:$${pnl.toFixed(2)} | ${inSafeMode?'🛡SAFE':'💰PROFIT'}`);}
-  else{
-    losses++;
-    if(mStep<maxMS-1){mStep++;curStk*=mMult;addLog('loss',`❌ LOSS | Step${mStep} → $${curStk.toFixed(2)} | ${inSafeMode?'🛡SAFE':'💰PROFIT'}`);}
-    else{mStep=0;curStk=parseFloat(document.getElementById('bstk').value);addLog('loss',`❌ Max steps. Reset.`);}
+  checkSwitch(won);
+  recHour(won);
+  todayData.pnl=pnl;
+  if(won){
+    wins++;todayData.w++;
+    addLog('win',`✅ WIN +$${Math.abs(profit).toFixed(2)} | Day P&L:${pnl>=0?'+':''}$${pnl.toFixed(2)} | ${inSafeMode?'🛡':'💰'}`);
+  } else {
+    losses++;todayData.l++;
+    addLog('loss',`❌ LOSS -$${Math.abs(profit).toFixed(2)} | Day P&L:${pnl>=0?'+':''}$${pnl.toFixed(2)} | ${inSafeMode?'🛡':'💰'}`);
+    // trigger cooldown after SA losses
+    if(consecLoss>=getSA()&&!inCooldown){
+      startCooldown();return;
+    }
   }
-  updStats();updMUI();delete contracts[id];
-  if(running)tTout=setTimeout(runTrade,1500);
+  updDailyPanel();saveAll();
+  delete contracts[id];
+  if(running&&!inCooldown)tTout=setTimeout(runTrade,1200);
 }
 
-function buildMS(){const c=document.getElementById('msteps');c.innerHTML='';for(let i=0;i<maxMS;i++){const s=document.createElement('div');s.className='ms';s.id=`ms${i}`;c.appendChild(s);}}
 function buildFG(){
   const g=document.getElementById('fgrid');g.innerHTML='';
   for(let d=0;d<=9;d++){
@@ -650,14 +880,6 @@ function buildFG(){
   }
 }
 function dc(d){return['#e74c3c','#e67e22','#f1c40f','#2ecc71','#1abc9c','#3498db','#9b59b6','#e91e63','#00bcd4','#ff5722'][d];}
-function updStats(){
-  document.getElementById('sW').textContent=wins;document.getElementById('sL').textContent=losses;
-  const tot=wins+losses,wr=tot?Math.round(wins/tot*100):0;
-  const we=document.getElementById('sWR');we.textContent=`${wr}%`;we.className=`sv ${wr>=55?'g':wr>=45?'y':'r'}`;
-  const pe=document.getElementById('sPnL');pe.textContent=`$${pnl.toFixed(2)}`;pe.className=`sv ${pnl>0?'g':pnl<0?'r':'b'}`;
-}
-function updStkDisp(){document.getElementById('sStk').textContent=`$${curStk.toFixed(2)}`;document.getElementById('sMl').textContent=mStep;}
-function updMUI(){for(let i=0;i<maxMS;i++){const e=document.getElementById(`ms${i}`);if(!e)continue;e.className='ms'+(i<mStep?' act':i===mStep&&mStep>0?' dn':'');}}
 function setStat(s){
   const dot=document.getElementById('dot'),txt=document.getElementById('stxt');dot.className='dot';
   if(s==='on'){dot.classList.add('on');txt.textContent='LIVE';}
@@ -665,7 +887,7 @@ function setStat(s){
   else if(s==='err'){dot.classList.add('err');txt.textContent='ERROR';}
   else txt.textContent='OFFLINE';
 }
-function showErr(m){const b=document.getElementById('errbx');b.textContent='⚠ '+m;b.style.display='block';addLog('warn',m);}
+function showErr(m){const b=document.getElementById('errbx');b.textContent='⚠ '+m;b.style.display='block';}
 function hideErr(){document.getElementById('errbx').style.display='none';}
 function addLog(t,m){
   const log=document.getElementById('tlog'),time=new Date().toTimeString().slice(0,8);
